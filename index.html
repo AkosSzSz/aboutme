@@ -111,7 +111,6 @@
     </aside>
 
     <main class="main-content">
-        <!-- RÓLAM SZEKCIÓ -->
         <section id="rolam">
             <div class="profile-container">
                 <div class="profile-text">
@@ -125,11 +124,9 @@
             <ul class="skills-list"><li>Python</li><li>C++</li><li>C#</li><li>Java</li><li>JavaScript</li></ul>
         </section>
 
-        <!-- PROJEKTEK GALÉRIA SZEKCIÓ -->
         <section id="galeria">
             <h2 id="sec-gallery-title">Projektek</h2>
             <div class="project-grid">
-                <!-- 1. PROJEKT -->
                 <div class="project">
                     <img class="project-img-placeholder" src="https://unsplash.com" alt="P1">
                     <div class="project-body">
@@ -142,7 +139,6 @@
                         </ul>
                     </div>
                 </div>
-                <!-- 2. PROJEKT -->
                 <div class="project">
                     <img class="project-img-placeholder" src="https://unsplash.com" alt="P2">
                     <div class="project-body">
@@ -157,12 +153,10 @@
             </div>
         </section>
 
-        <!-- MI LABOR SZEKCIÓ -->
         <section id="ailab">
             <h2 id="sec-ailab-title">MI Kísérleti Labor</h2>
             <div class="project-grid">
                 
-                <!-- 1. KÍSÉRLET: K-MEANS -->
                 <div class="project">
                     <div class="project-body">
                         <div class="project-header"><h3 class="project-title" id="ai1-title">K-Means Klaszterező</h3><span class="project-tag">ML</span></div>
@@ -178,7 +172,6 @@
                     </div>
                 </div>
 
-                <!-- 2. KÍSÉRLET: NEURÁLIS HÁLÓ -->
                 <div class="project">
                     <div class="project-body">
                         <div class="project-header"><h3 class="project-title" id="ai2-title">Neurális Hálózat építő</h3><span class="project-tag">DL</span></div>
@@ -194,7 +187,6 @@
                     </div>
                 </div>
 
-                <!-- 3. KÍSÉRLET: GENETIKUS ALGORITMUS -->
                 <div class="project">
                     <div class="project-body">
                         <div class="project-header"><h3 class="project-title" id="ai3-title">Genetikus Útvonaloptimalizáló</h3><span class="project-tag">Evolúciós</span></div>
@@ -219,7 +211,6 @@
             </div>
         </section>
 
-        <!-- EREDMÉNYEK SZEKCIÓ -->
         <section id="eredmenyek">
             <h2 id="sec-awards-title">Eredmények</h2>
             <div style="border: 1px solid var(--border); padding: 20px; background-color: var(--card-bg); display: flex; gap: 16px;">
@@ -232,7 +223,6 @@
             </div>
         </section>
 
-        <!-- ELÉRHETŐSÉG SZEKCIÓ -->
         <section id="elerhetoseg">
             <h2 id="sec-contact-title">Kapcsolat</h2>
             <div class="contact-info">
@@ -244,7 +234,6 @@
     </main>
 
     <script>
-        // --- 1. TELJES NYELVI ADATBÁZIS ---
         const t = {
             hu: {
                 "btn-menu": "☰ Menü",
@@ -443,13 +432,11 @@
             if (targetBtn) targetBtn.classList.add('active');
             document.documentElement.lang = lang;
 
-            // Frissítjük a dinamikus statisztikákat is nyelvváltáskor
             drawKMeans();
             drawNN();
             drawTSP();
         }
 
-        // --- 2. K-MEANS KLASZTEREZŐ LOGIKA ---
         const kmCanvas = document.getElementById('kmeansCanvas');
         const kmCtx = kmCanvas ? kmCanvas.getContext('2d') : null;
         let kmPoints = [];
@@ -521,7 +508,6 @@
 
         function resetKMeans() { kmPoints = []; kmCentroids = []; drawKMeans(); }
 
-        // --- 3. NEURÁLIS HÁLÓZAT VIZUALIZÁCIÓ ---
         const nnCanvas = document.getElementById('nnCanvas');
         const nnCtx = nnCanvas ? nnCanvas.getContext('2d') : null;
         let nnLayers = [3, 4, 2];
@@ -581,7 +567,6 @@
         function addHiddenLayer() { if(nnLayers.length < 5) { nnLayers.splice(nnLayers.length - 1, 0, 4); } drawNN(); }
         function resetNN() { nnLayers = [3, 4, 2]; drawNN(); }
 
-        // --- 4. GENETIKUS ALGORITMUS (TSP) LOGIKA ---
         const tspCanvas = document.getElementById('tspCanvas');
         const tspCtx = tspCanvas ? tspCanvas.getContext('2d') : null;
         let tspCities = [];
@@ -721,7 +706,6 @@
             drawTSP();
         }
 
-        // --- 5. INITIALIZATION ---
         window.onload = function() { 
             setLanguage('hu'); 
             drawKMeans();
