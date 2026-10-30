@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Szoftverfejlesztő Portfólió & AI Lab</title>
+    <style>
+        :root {
+            --bg: #121212;
+            --sidebar-bg: #1a1a1a;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --text-main: #ffffff;
+            --text-muted: #a0a0a0;
+            --border: #2a2a2a;
+            --accent: #ffffff;
+            --sidebar-width: 260px;
+        }
+        [data-theme="light"] {
+            --bg: #ffffff;
+            --sidebar-bg: #f5f5f5;
+            --card-bg: rgba(0, 0, 0, 0.02);
+            --text-main: #000000;
+            --text-muted: #666666;
+            --border: #e0e0e0;
+            --accent: #000000;
+        }
+        *, *::before, *::after { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg); color: var(--text-main);
+            line-height: 1.6; margin: 0; padding: 0; overflow-x: hidden;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .sidebar {
+            position: fixed; top: 0; left: calc(-1 * var(--sidebar-width));
+            width: var(--sidebar-width); height: 100vh; background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border); transition: left 0.3s; z-index: 1000; padding: 60px 24px;
+        }
+        .sidebar.active { left: 0 !important; }
+        .close-btn {
+            background: none; border: none; color: var(--text-muted);
+            font-size: 1.5rem; cursor: pointer; position: absolute; top: 20px; right: 20px;
+        }
+        .menu-list { list-style: none; padding: 0; margin: 0; }
+        .menu-list li { margin-bottom: 20px; }
+        .menu-list a { color: var(--text-muted); text-decoration: none; font-size: 1.05rem; display: block; }
+        .menu-list a:hover { color: var(--accent); }
+        .menu-toggle {
+            position: fixed; top: 25px; left: 25px; background-color: var(--sidebar-bg);
+            border: 1px solid var(--border); color: var(--text-main); padding: 10px 16px;
+            border-radius: 4px; cursor: pointer; z-index: 900; font-size: 0.9rem;
+        }
+        .controls-container { position: fixed; top: 25px; right: 25px; display: flex; gap: 12px; z-index: 900; }
+        .theme-toggle, .lang-btn {
+            background-color: var(--sidebar-bg); border: 1px solid var(--border);
+            color: var(--text-main); padding: 10px 14px; border-radius: 4px; cursor: pointer; font-size: 0.85rem;
+        }
+        .lang-btn.active { background-color: var(--text-main); color: var(--bg); border-color: var(--text-main); }
+        .main-content { width: 100%; max-width: 900px; margin: 0 auto; padding: 120px 24px 80px 24px; }
+        section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+        section:last-child { border-bottom: none; }
+        .profile-container { display: flex; flex-wrap: wrap; gap: 40px; align-items: center; }
+        .profile-text { flex: 1; min-width: 280px; }
+        .profile-img { width: 180px; height: 180px; border-radius: 4px; border: 1px solid var(--border); object-fit: cover; }
+        h1 { font-size: 2.5rem; margin: 0 0 10px 0; letter-spacing: -0.03em; }
+        .title-sub { color: var(--text-muted); font-size: 1.2rem; margin-bottom: 20px; font-family: monospace; }
+        h2 { font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 30px; }
+        .skills-list { display: flex; flex-wrap: wrap; gap: 10px; padding: 0; list-style: none; }
+        .skills-list li { font-size: 0.85rem; border: 1px solid var(--border); padding: 6px 14px; border-radius: 4px; font-family: monospace; }
+        .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 350px), 1fr)); gap: 24px; }
+        .project { border: 1px solid var(--border); border-radius: 4px; background-color: var(--card-bg); overflow: hidden; display: flex; flex-direction: column; margin-bottom: 24px; }
+        .project-img-placeholder { width: 100%; height: 160px; object-fit: cover; border-bottom: 1px solid var(--border); }
+        .project-body { padding: 20px; flex: 1; display: flex; flex-direction: column; }
+        .project-header { display: flex; justify-content: space-between; margin-bottom: 12px; }
+        .project-title { font-size: 1.2rem; margin: 0; }
+        .project-tag { font-size: 0.8rem; color: var(--text-muted); font-family: monospace; }
+        .project-desc { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 16px; flex: 1; }
+        .project-tech { font-size: 0.85rem; color: var(--text-muted); padding-left: 20px; }
+        .contact-info a { color: var(--text-main); text-decoration: underline; }
+        
+        .ai-container { margin-top: 20px; border: 1px solid var(--border); border-radius: 4px; background: var(--sidebar-bg); padding: 15px; display: flex; flex-direction: column; gap: 10px; }
+        .ai-canvas { width: 100%; height: 250px; background: #0a0a0a; border: 1px solid var(--border); border-radius: 2px; cursor: crosshair; }
+        [data-theme="light"] .ai-canvas { background: #fafafa; }
+        .ai-btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+        .ai-btn { background: var(--bg); border: 1px solid var(--border); color: var(--text-main); padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-family: monospace; }
+        .ai-btn:hover { background: var(--text-main); color: var(--bg); }
+        .ai-stats { font-family: monospace; font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; }
+        @media (max-width: 600px) { .profile-container { flex-direction: column-reverse; text-align: center; } .main-content { padding-top: 100px; } }
+    </style>
+</head>
+<body>
+    <button class="menu-toggle" id="btn-menu" onclick="toggleSidebar()">☰ Menü</button>
+    
+    <div class="controls-container">
+        <button class="lang-btn active" id="lang-hu" onclick="setLanguage('hu')">HU</button>
+        <button class="lang-btn" id="lang-en" onclick="setLanguage('en')">EN</button>
+        <button class="lang-btn" id="lang-de" onclick="setLanguage('de')">DE</button>
+        <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
+    </div>
+
+    <aside class="sidebar" id="mySidebar">
+        <button class="close-btn" onclick="toggleSidebar()">✕</button>
+        <ul class="menu-list">
+            <li><a href="#rolam" id="nav-about" onclick="toggleSidebar()">Rólam</a></li>
+            <li><a href="#galeria" id="nav-gallery" onclick="toggleSidebar()">Projektek</a></li>
+            <li><a href="#ailab" id="nav-ailab" onclick="toggleSidebar()">MI Labor</a></li>
+            <li><a href="#eredmenyek" id="nav-awards" onclick="toggleSidebar()">Eredmények</a></li>
+            <li><a href="#elerhetoseg" id="nav-contact" onclick="toggleSidebar()">Kapcsolat</a></li>
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        <!-- RÓLAM SZEKCIÓ -->
+        <section id="rolam">
+            <div class="profile-container">
+                <div class="profile-text">
+                    <h1 id="hero-title">Szoftverfejlesztő</h1>
+                    <div class="title-sub" id="hero-subtitle">Mesterséges Intelligencia & Adattudomány</div>
+                    <p id="hero-desc" style="color: var(--text-muted); font-size: 1.05rem;">Adattudományi és mesterséges intelligencia megoldásokra fókuszáló fejlesztő vagyok. Erős algoritmikus és matematikai alapokkal rendelkezem, prediktív modellezés és összetett adatszerkezetek feldolgozása terén.</p>
+                </div>
+                <img class="profile-img" src="profil.jpg" alt="Profil">
+            </div>
+            <h2 id="sec-skills-title">Készségek</h2>
+            <ul class="skills-list"><li>Python</li><li>C++</li><li>C#</li><li>Java</li><li>JavaScript</li></ul>
+        </section>
+
+        <!-- PROJEKTEK GALÉRIA SZEKCIÓ -->
+        <section id="galeria">
+            <h2 id="sec-gallery-title">Projektek</h2>
+            <div class="project-grid">
+                <!-- 1. PROJEKT -->
+                <div class="project">
+                    <img class="project-img-placeholder" src="https://unsplash.com" alt="P1">
+                    <div class="project-body">
+                        <div class="project-header"><h3 class="project-title" id="p1-title">Időjárás-Korrekciós Rendszer</h3><span class="project-tag">Python</span></div>
+                        <p class="project-desc" id="p1-desc">Adatelemző modul, amely történeti előrejelzéseket hasonlít össze valós idejű mérési adatokkal, pontosítva a jövőbeli becsléseket.</p>
+                        <div style="border: 1px dashed var(--text-muted); padding: 8px; border-radius: 4px; margin-bottom: 12px; font-size: 0.85rem;">🏆 <span id="p1-badge">Egyetemi Kitüntetéssel elismert projekt</span></div>
+                        <ul class="project-tech">
+                            <li id="p1-tech1">JSON adatstruktúrák feldolgozása</li>
+                            <li id="p1-tech2">Dinamikus hibaszámítás időbélyegek alapján</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- 2. PROJEKT -->
+                <div class="project">
+                    <img class="project-img-placeholder" src="https://unsplash.com" alt="P2">
+                    <div class="project-body">
+                        <div class="project-header"><h3 class="project-title" id="p2-title">Snake Játék & Oktatás</h3><span class="project-tag">Python</span></div>
+                        <p class="project-desc" id="p2-desc">Egyedi logikájú Snake játék, amely oktatási segédanyagként szolgált programozás-módszertani bemutatókon, szemléltetve a tiszta kód elveit.</p>
+                        <ul class="project-tech">
+                            <li id="p2-tech1">Rácsalapú mozgás és ütközésvizsgálat</li>
+                            <li id="p2-tech2">Dinamikus pontrendszer és állapotkezelés</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MI LABOR SZEKCIÓ -->
+        <section id="ailab">
+            <h2 id="sec-ailab-title">MI Kísérleti Labor</h2>
+            <div class="project-grid">
+                
+                <!-- 1. KÍSÉRLET: K-MEANS -->
+                <div class="project">
+                    <div class="project-body">
+                        <div class="project-header"><h3 class="project-title" id="ai1-title">K-Means Klaszterező</h3><span class="project-tag">ML</span></div>
+                        <p class="project-desc" id="ai1-desc">Kattints az alábbi sötét mezőbe tetszőleges pontok elhelyezéséhez, majd indítsd el a klaszterezést!</p>
+                        <div class="ai-container">
+                            <canvas id="kmeansCanvas" class="ai-canvas" width="400" height="250"></canvas>
+                            <div class="ai-btn-row">
+                                <button class="ai-btn" id="ai1-btn1" onclick="runKMeans()">Klaszterezés</button>
+                                <button class="ai-btn" id="ai1-btn2" onclick="resetKMeans()">Törlés</button>
+                            </div>
+                            <div id="kmeansStats" class="ai-stats">Pontok száma: 0 | Klaszterek száma: 3</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. KÍSÉRLET: NEURÁLIS HÁLÓ -->
+                <div class="project">
+                    <div class="project-body">
+                        <div class="project-header"><h3 class="project-title" id="ai2-title">Neurális Hálózat építő</h3><span class="project-tag">DL</span></div>
+                        <p class="project-desc" id="ai2-desc">Mély neurális hálózatok adatáramlásának (Forward Propagation) vizuális szimulációja valós időben.</p>
+                        <div class="ai-container">
+                            <canvas id="nnCanvas" class="ai-canvas" width="400" height="250"></canvas>
+                            <div class="ai-btn-row">
+                                <button class="ai-btn" id="ai2-btn1" onclick="addHiddenLayer()">Réteg +</button>
+                                <button class="ai-btn" id="ai2-btn2" onclick="resetNN()">Alaphelyzet</button>
+                            </div>
+                            <div id="nnStats" class="ai-stats">Bemenetek: 3 | Rejtett rétegek száma: 1 | Kimenetek: 2</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. KÍSÉRLET: GENETIKUS ALGORITMUS -->
+                <div class="project">
+                    <div class="project-body">
+                        <div class="project-header"><h3 class="project-title" id="ai3-title">Genetikus Útvonaloptimalizáló</h3><span class="project-tag">Evolúciós</span></div>
+                        <p class="project-desc" id="ai3-desc">Helyezz el kattintással városokat a mezőben, az evolúciós algoritmus pedig megkeresi a legrövidebb körutat.</p>
+                        <div class="ai-container">
+                            <canvas id="tspCanvas" class="ai-canvas" width="400" height="250"></canvas>
+                            <div class="ai-btn-row">
+                                <button class="ai-btn" id="ai3-btn1" onclick="startTSP()">Evolúció indítása</button>
+                                <button class="ai-btn" id="ai3-btn2" onclick="resetTSP()">Törlés</button>
+                            </div>
+                            <div class="ai-btn-row" style="margin-top: 5px;">
+                                <span id="ai3-speed-label" style="font-family: monospace; font-size: 0.8rem; color: var(--text-muted); align-self: center;">Sebesség:</span>
+                                <button class="ai-btn" id="ai3-slow" onclick="setTSPSpeed(150)">Lassú</button>
+                                <button class="ai-btn" id="ai3-mid" onclick="setTSPSpeed(40)">Közepes</button>
+                                <button class="ai-btn" id="ai3-fast" onclick="setTSPSpeed(5)">Gyors</button>
+                            </div>
+                            <div id="tspStats" class="ai-stats">Városok: 0 | Legjobb távolság: - | Generáció: 0</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- EREDMÉNYEK SZEKCIÓ -->
+        <section id="eredmenyek">
+            <h2 id="sec-awards-title">Eredmények</h2>
+            <div style="border: 1px solid var(--border); padding: 20px; background-color: var(--card-bg); display: flex; gap: 16px;">
+                <div style="font-size: 1.8rem;">🏆</div>
+                <div>
+                    <h3 style="margin: 0 0 4px 0;" id="a1-title">Egyetemi Kiválósági Kitüntetés</h3>
+                    <div style="font-size: 0.85rem; color: var(--text-muted); font-family: monospace; margin-bottom: 8px;" id="a1-sub">Szakmai elismerés • Szoftver Projekt</div>
+                    <p style="margin: 0; color: var(--text-muted); font-size: 0.95rem;" id="a1-desc">Az időjárás-korrekciós rendszerért odaítélt egyetemi kitüntetés a komplex adatkezelés és modellpontosság elismeréseként.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ELÉRHETŐSÉG SZEKCIÓ -->
+        <section id="elerhetoseg">
+            <h2 id="sec-contact-title">Kapcsolat</h2>
+            <div class="contact-info">
+                <p id="contact-text">Keress bizalommal az alábbi elérhetőségeken:</p>
+                <p>📧 E-mail: <a href="mailto:szszakos@outlook.hu">szszakos@outlook.hu</a></p>
+                <p>💻 GitHub: <a href="https://github.com/AkosSzSz" target="_blank">https://github.com/AkosSzSz</a></p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // --- 1. TELJES NYELVI ADATBÁZIS ---
+        const t = {
+            hu: {
+                "btn-menu": "☰ Menü",
+                "nav-about": "Rólam",
+                "nav-gallery": "Projektek",
+                "nav-ailab": "MI Labor",
+                "nav-awards": "Eredmények",
+                "nav-contact": "Kapcsolat",
+                
+                "hero-title": "Szoftverfejlesztő",
+                "hero-subtitle": "Mesterséges Intelligencia & Adattudomány",
+                "hero-desc": "Adattudományi és mesterséges intelligencia megoldásokra fókuszáló fejlesztő vagyok. Erős algoritmikus és matematikai alapokkal rendelkezem, prediktív modellezés és összetett adatszerkezetek feldolgozása terén.",
+                
+                "sec-skills-title": "Készségek",
+                "sec-gallery-title": "Projektek",
+                "sec-ailab-title": "MI Kísérleti Labor",
+                "sec-awards-title": "Eredmények",
+                "sec-contact-title": "Kapcsolat",
+
+                "p1-title": "Időjárás-Korrekciós Rendszer",
+                "p1-desc": "Adatelemző modul, amely történeti előrejelzéseket hasonlít össze valós idejű mérési adatokkal, pontosítva a jövőbeli becsléseket.",
+                "p1-badge": "Egyetemi Kitüntetéssel elismert projekt",
+                "p1-tech1": "JSON adatstruktúrák feldolgozása",
+                "p1-tech2": "Dinamikus hibaszámítás időbélyegek alapján",
+                
+                "p2-title": "Snake Játék & Oktatás",
+                "p2-desc": "Egyedi logikájú Snake játék, amely oktatási segédanyagként szolgált programozás-módszertani bemutatókon, szemléltetve a tiszta kód elveit.",
+                "p2-tech1": "Rácsalapú mozgás és ütközésvizsgálat",
+                "p2-tech2": "Dinamikus pontrendszer és állapotkezelés",
+
+                "ai1-title": "K-Means Klaszterező",
+                "ai1-desc": "Kattints az alábbi sötét mezőbe tetszőleges pontok elhelyezéséhez, majd indítsd el a klaszterezést!",
+                "ai1-btn1": "Klaszterezés",
+                "ai1-btn2": "Törlés",
+
+                "ai2-title": "Neurális Hálózat építő",
+                "ai2-desc": "Mély neurális hálózatok adatáramlásának (Forward Propagation) vizuális szimulációja valós időben.",
+                "ai2-btn1": "Réteg +",
+                "ai2-btn2": "Alaphelyzet",
+
+                "ai3-title": "Genetikus Útvonaloptimalizáló",
+                "ai3-desc": "Helyezz el kattintással városokat a mezőben, az evolúciós algoritmus pedig megkeresi a legrövidebb körutat.",
+                "ai3-btn1": "Evolúció indítása",
+                "ai3-btn2": "Törlés",
+                "ai3-slow": "Lassú",
+                "ai3-mid": "Közepes",
+                "ai3-fast": "Gyors",
+                "ai3-speed-label": "Sebesség:",
+
+                "a1-title": "Egyetemi Kiválósági Kitüntetés",
+                "a1-sub": "Szakmai elismerés • Szoftver Projekt",
+                "a1-desc": "Az időjárás-korrekciós rendszerért odaítélt egyetemi kitüntetés a komplex adatkezelés és modellpontosság elismeréseként.",
+                "contact-text": "Keress bizalommal az alábbi elérhetőségeken:",
+
+                "stat-kmeans": "Pontok száma: {points} | Klaszterek száma: {clusters}",
+                "stat-nn": "Bemenetek: {inputs} | Rejtett rétegek száma: {hidden} | Kimenetek: {outputs}",
+                "stat-tsp": "Városok: {cities} | Legjobb távolság: {distance} | Generáció: {generation}"
+            },
+            en: {
+                "btn-menu": "☰ Menu",
+                "nav-about": "About",
+                "nav-gallery": "Projects",
+                "nav-ailab": "AI Lab",
+                "nav-awards": "Awards",
+                "nav-contact": "Contact",
+                
+                "hero-title": "Software Developer",
+                "hero-subtitle": "Artificial Intelligence & Data Science",
+                "hero-desc": "I am a software developer focusing on AI and data science solutions. I have strong algorithmic and mathematical foundations, with a keen interest in predictive modeling and complex data processing.",
+                
+                "sec-skills-title": "Technical Skills",
+                "sec-gallery-title": "Project Gallery",
+                "sec-ailab-title": "AI Experimental Lab",
+                "sec-awards-title": "Awards",
+                "sec-contact-title": "Contact",
+
+                "p1-title": "Predictive Weather Correction",
+                "p1-desc": "Data analysis module comparing historical forecasts with real-time measurements to refine future predictions.",
+                "p1-badge": "Project Awarded with University Honors",
+                "p1-tech1": "JSON Data Structure Parsing",
+                "p1-tech2": "Dynamic Error Calculation for Timestamps",
+                
+                "p2-title": "Snake Game & Education",
+                "p2-desc": "A custom Snake game used as a demonstration tool during programming workshops to showcase clean code principles to students.",
+                "p2-tech1": "Grid-Based Movement and Collision Detection",
+                "p2-tech2": "Dynamic Scoring and State Management",
+
+                "ai1-title": "K-Means Clustering",
+                "ai1-desc": "Click inside the dark area below to place arbitrary points, then start the clustering!",
+                "ai1-btn1": "Cluster",
+                "ai1-btn2": "Clear",
+
+                "ai2-title": "Neural Network Builder",
+                "ai2-desc": "Visual real-time simulation of deep neural network data flow (Forward Propagation).",
+                "ai2-btn1": "Layer +",
+                "ai2-btn2": "Reset",
+
+                "ai3-title": "Genetic Route Optimizer",
+                "ai3-desc": "Click to place cities in the field, and the evolutionary algorithm will find the shortest tour.",
+                "ai3-btn1": "Start Evolution",
+                "ai3-btn2": "Clear",
+                "ai3-slow": "Slow",
+                "ai3-mid": "Medium",
+                "ai3-fast": "Fast",
+                "ai3-speed-label": "Speed:",
+
+                "a1-title": "University Excellence Award",
+                "a1-sub": "Professional Recognition • Software Project",
+                "a1-desc": "University award granted for the weather correction system in recognition of complex data handling and model accuracy.",
+                "contact-text": "Feel free to contact me through the following channels:",
+
+                "stat-kmeans": "Points: {points} | Clusters: {clusters}",
+                "stat-nn": "Inputs: {inputs} | Hidden Layers: {hidden} | Outputs: {outputs}",
+                "stat-tsp": "Cities: {cities} | Best Distance: {distance} | Generation: {generation}"
+            },
+            de: {
+                "btn-menu": "☰ Menü",
+                "nav-about": "Über mich",
+                "nav-gallery": "Galerie",
+                "nav-ailab": "KI-Labor",
+                "nav-awards": "Erfolge",
+                "nav-contact": "Kontakt",
+                
+                "hero-title": "Softwareentwickler",
+                "hero-subtitle": "Künstliche Intelligenz & Datenwissenschaft",
+                "hero-desc": "Ich bin ein softwareentwickler mit dem Fokus auf KI und Datenwissenschaft. Ich verfüge über fundierte algorithmische Grundlagen, mit besonderem Interesse an prädiktiver Modellierung.",
+                
+                "sec-skills-title": "Fähigkeiten",
+                "sec-gallery-title": "Projektgalerie",
+                "sec-ailab-title": "KI-Experimentallabor",
+                "sec-awards-title": "Erfolge",
+                "sec-contact-title": "Kontakt",
+
+                "p1-title": "Wetterkorrektursystem",
+                "p1-desc": "Datenanalysemodul, das historische Vorhersagen mit Echtzeit-Messdaten vergleicht, um zukünftige Schätzungen zu präzisieren.",
+                "p1-badge": "Mit Universitätspreis ausgezeichnet",
+                "p1-tech1": "JSON-Datenstrukturen parsen",
+                "p1-tech2": "Dynamische Fehlerberechnung für Zeitstempel",
+                
+                "p2-title": "Snake Spiel & Bildung",
+                "p2-desc": "Ein Snake-Spiel, das als Demonstrationswerkzeug in Programmierworkshops diente, um Schülern Clean-Code-Prinzipien zu vermitteln.",
+                "p2-tech1": "Gitterbasierte Bewegung und Kollisionserkennung",
+                "p2-tech2": "Dynamisches Punktesystem und Zustandsverwaltung",
+
+                "ai1-title": "K-Means Clustering",
+                "ai1-desc": "Klicken Sie in den dunklen Bereich unten, um Punkte zu setzen, und starten Sie das Clustering!",
+                "ai1-btn1": "Clustern",
+                "ai1-btn2": "Löschen",
+
+                "ai2-title": "Neuronales Netzwerk-Builder",
+                "ai2-desc": "Visuelle Echtzeitsimulation des Datenflusses tiefer neuronaler Netze (Forward Propagation).",
+                "ai2-btn1": "Schicht +",
+                "ai2-btn2": "Zurücksetzen",
+
+                "ai3-title": "Genetischer Route-Optimizer",
+                "ai3-desc": "Plazieren Sie Städte durch Klicken, und der Evolutionsalgorithmus findet die kürzeste Rundreise.",
+                "ai3-btn1": "Evolution starten",
+                "ai3-btn2": "Löschen",
+                "ai3-slow": "Langsam",
+                "ai3-mid": "Mittel",
+                "ai3-fast": "Schnell",
+                "ai3-speed-label": "Geschwindigkeit:",
+
+                "a1-title": "Universität-Exzellenzpreis",
+                "a1-sub": "Professionelle Anerkennung • Softwareprojekt",
+                "a1-desc": "Universitätspreis für das Wetterkorrektursystem in Anerkennung komplexer Datenverarbeitung und Modellgenauigkeit.",
+                "contact-text": "Kontaktieren Sie mich gerne über die folgenden Kanäle:",
+
+                "stat-kmeans": "Punkte: {points} | Cluster: {clusters}",
+                "stat-nn": "Eingaben: {inputs} | Versteckte Schichten: {hidden} | Ausgaben: {outputs}",
+                "stat-tsp": "Städte: {cities} | Beste Distanz: {distance} | Generation: {generation}"
+            }
+        };
+
+        function toggleSidebar() { document.getElementById("mySidebar").classList.toggle("active"); }
+
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute("data-theme");
+            const newTheme = current === "light" ? "dark" : "light";
+            setTheme(newTheme);
+        }
+
+        function setTheme(theme) {
+            if (theme === "light") document.documentElement.setAttribute("data-theme", "light");
+            else document.documentElement.removeAttribute("data-theme");
+            localStorage.setItem("user-theme", theme);
+        }
+
+        function setLanguage(lang) {
+            for (const k in t[lang]) {
+                const el = document.getElementById(k);
+                if (el && el.tagName !== 'IMG') el.innerHTML = t[lang][k];
+            }
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+            const targetBtn = document.getElementById(`lang-${lang}`);
+            if (targetBtn) targetBtn.classList.add('active');
+            document.documentElement.lang = lang;
+
+            // Frissítjük a dinamikus statisztikákat is nyelvváltáskor
+            drawKMeans();
+            drawNN();
+            drawTSP();
+        }
+
+        // --- 2. K-MEANS KLASZTEREZŐ LOGIKA ---
+        const kmCanvas = document.getElementById('kmeansCanvas');
+        const kmCtx = kmCanvas ? kmCanvas.getContext('2d') : null;
+        let kmPoints = [];
+        let kmCentroids = [];
+        const kmColors = ['#ff4a4a', '#4ade80', '#007BFF'];
+
+        if (kmCanvas) {
+            kmCanvas.addEventListener('click', (e) => {
+                const rect = kmCanvas.getBoundingClientRect();
+                const scaleX = kmCanvas.width / rect.width;
+                const scaleY = kmCanvas.height / rect.height;
+                const x = (e.clientX - rect.left) * scaleX;
+                const y = (e.clientY - rect.top) * scaleY;
+                kmPoints.push({ x, y, cluster: -1 });
+                drawKMeans();
+            });
+        }
+
+        function drawKMeans() {
+            if (!kmCtx) return;
+            kmCtx.clearRect(0, 0, kmCanvas.width, kmCanvas.height);
+            
+            const lang = document.documentElement.lang || 'hu';
+            const template = t[lang]["stat-kmeans"] || t['hu']["stat-kmeans"];
+            document.getElementById('kmeansStats').innerText = template
+                .replace('{points}', kmPoints.length)
+                .replace('{clusters}', 3);
+            
+            kmPoints.forEach(p => {
+                kmCtx.beginPath(); kmCtx.arc(p.x, p.y, 5, 0, Math.PI * 2);
+                kmCtx.fillStyle = p.cluster === -1 ? '#a0a0a0' : kmColors[p.cluster]; kmCtx.fill();
+            });
+
+            kmCentroids.forEach((c, idx) => {
+                kmCtx.strokeStyle = kmColors[idx]; kmCtx.lineWidth = 3;
+                kmCtx.beginPath();
+                kmCtx.moveTo(c.x - 8, c.y - 8); kmCtx.lineTo(c.x + 8, c.y + 8);
+                kmCtx.moveTo(c.x + 8, c.y - 8); kmCtx.lineTo(c.x - 8, c.y + 8);
+                kmCtx.stroke();
+            });
+        }
+
+        function runKMeans() {
+            if (kmPoints.length < 3) return;
+            if (kmCentroids.length === 0) {
+                for (let i = 0; i < 3; i++) {
+                    const rp = kmPoints[Math.floor(Math.random() * kmPoints.length)];
+                    kmCentroids.push({ x: rp.x, y: rp.y });
+                }
+            }
+            kmPoints.forEach(p => {
+                let minDist = Infinity; let closest = 0;
+                kmCentroids.forEach((c, idx) => {
+                    let d = Math.hypot(p.x - c.x, p.y - c.y);
+                    if (d < minDist) { minDist = d; closest = idx; }
+                });
+                p.cluster = closest;
+            });
+            for (let i = 0; i < 3; i++) {
+                let clusterPoints = kmPoints.filter(p => p.cluster === i);
+                if (clusterPoints.length > 0) {
+                    let sumX = clusterPoints.reduce((sum, p) => sum + p.x, 0);
+                    let sumY = clusterPoints.reduce((sum, p) => sum + p.y, 0);
+                    kmCentroids[i] = { x: sumX / clusterPoints.length, y: sumY / clusterPoints.length };
+                }
+            }
+            drawKMeans();
+        }
+
+        function resetKMeans() { kmPoints = []; kmCentroids = []; drawKMeans(); }
+
+        // --- 3. NEURÁLIS HÁLÓZAT VIZUALIZÁCIÓ ---
+        const nnCanvas = document.getElementById('nnCanvas');
+        const nnCtx = nnCanvas ? nnCanvas.getContext('2d') : null;
+        let nnLayers = [3, 4, 2];
+        let animationFrame;
+        let pulseOffset = 0;
+
+        function drawNN() {
+            if (!nnCtx || !nnCanvas) return;
+            nnCtx.clearRect(0, 0, nnCanvas.width, nnCanvas.height);
+            
+            const lang = document.documentElement.lang || 'hu';
+            const template = t[lang]["stat-nn"] || t['hu']["stat-nn"];
+            document.getElementById('nnStats').innerText = template
+                .replace('{inputs}', nnLayers[0])
+                .replace('{hidden}', nnLayers.length - 2)
+                .replace('{outputs}', nnLayers[nnLayers.length - 1]);
+            
+            let layerSpacing = nnCanvas.width / (nnLayers.length + 1);
+            let positions = [];
+
+            nnLayers.forEach((count, lIdx) => {
+                let x = layerSpacing * (lIdx + 1);
+                let nodeSpacing = nnCanvas.height / (count + 1);
+                let layerPos = [];
+                for (let i = 0; i < count; i++) {
+                    layerPos.push({ x, y: nodeSpacing * (i + 1) });
+                }
+                positions.push(layerPos);
+            });
+
+            for (let l = 0; l < positions.length - 1; l++) {
+                positions[l].forEach(p1 => {
+                    positions[l+1].forEach(p2 => {
+                        nnCtx.strokeStyle = 'rgba(160, 160, 160, 0.15)';
+                        nnCtx.lineWidth = 1;
+                        nnCtx.beginPath(); nnCtx.moveTo(p1.x, p1.y); nnCtx.lineTo(p2.x, p2.y); nnCtx.stroke();
+
+                        nnCtx.fillStyle = '#4ade80';
+                        let tVal = (pulseOffset) % 1;
+                        let cx = p1.x + (p2.x - p1.x) * tVal;
+                        let cy = p1.y + (p2.y - p1.y) * tVal;
+                        nnCtx.beginPath(); nnCtx.arc(cx, cy, 2, 0, Math.PI * 2); nnCtx.fill();
+                    });
+                });
+            }
+
+            positions.forEach(layer => {
+                layer.forEach(p => {
+                    nnCtx.beginPath(); nnCtx.arc(p.x, p.y, 10, 0, Math.PI * 2);
+                    nnCtx.fillStyle = '#121212'; nnCtx.fill();
+                    nnCtx.strokeStyle = '#ffffff'; nnCtx.lineWidth = 2; nnCtx.stroke();
+                });
+            });
+        }
+
+        function animateNN() { pulseOffset += 0.015; drawNN(); animationFrame = requestAnimationFrame(animateNN); }
+        function addHiddenLayer() { if(nnLayers.length < 5) { nnLayers.splice(nnLayers.length - 1, 0, 4); } drawNN(); }
+        function resetNN() { nnLayers = [3, 4, 2]; drawNN(); }
+
+        // --- 4. GENETIKUS ALGORITMUS (TSP) LOGIKA ---
+        const tspCanvas = document.getElementById('tspCanvas');
+        const tspCtx = tspCanvas ? tspCanvas.getContext('2d') : null;
+        let tspCities = [];
+        let tspPopulation = [];
+        let tspPopSize = 150;
+        let tspBestPath = [];
+        let tspBestDist = Infinity;
+        let tspGeneration = 0;
+        let tspRunning = false;
+        let tspInterval = null;
+        let tspSpeed = 40;
+
+        if (tspCanvas) {
+            tspCanvas.addEventListener('click', (e) => {
+                if (tspRunning) return;
+                const rect = tspCanvas.getBoundingClientRect();
+                const scaleX = tspCanvas.width / rect.width;
+                const scaleY = tspCanvas.height / rect.height;
+                const x = (e.clientX - rect.left) * scaleX;
+                const y = (e.clientY - rect.top) * scaleY;
+                tspCities.push({ x, y });
+                drawTSP();
+            });
+        }
+
+        function setTSPSpeed(ms) {
+            tspSpeed = ms;
+            document.getElementById('ai3-slow').style.borderColor = 'var(--border)';
+            document.getElementById('ai3-mid').style.borderColor = 'var(--border)';
+            document.getElementById('ai3-fast').style.borderColor = 'var(--border)';
+            
+            if (ms === 150) document.getElementById('ai3-slow').style.borderColor = '#ffffff';
+            else if (ms === 40) document.getElementById('ai3-mid').style.borderColor = '#ffffff';
+            else if (ms === 5) document.getElementById('ai3-fast').style.borderColor = '#ffffff';
+
+            if (tspRunning) {
+                clearInterval(tspInterval);
+                tspInterval = setInterval(evolveTSP, tspSpeed);
+            }
+        }
+
+        function calcDistance(p1, p2) { return Math.hypot(p1.x - p2.x, p1.y - p2.y); }
+
+        function calcPathLength(path) {
+            let d = 0;
+            for (let i = 0; i < path.length; i++) {
+                d += calcDistance(tspCities[path[i]], tspCities[path[(i + 1) % path.length]]);
+            }
+            return d;
+        }
+
+        function drawTSP() {
+            if (!tspCtx) return;
+            tspCtx.clearRect(0, 0, tspCanvas.width, tspCanvas.height);
+            
+            const lang = document.documentElement.lang || 'hu';
+            const template = t[lang]["stat-tsp"] || t['hu']["stat-tsp"];
+            const distText = tspBestDist === Infinity ? '-' : Math.round(tspBestDist) + ' px';
+            
+            document.getElementById('tspStats').innerText = template
+                .replace('{cities}', tspCities.length)
+                .replace('{distance}', distText)
+                .replace('{generation}', tspGeneration);
+
+            tspCities.forEach(c => {
+                tspCtx.beginPath(); tspCtx.arc(c.x, c.y, 6, 0, Math.PI * 2);
+                tspCtx.fillStyle = '#ffffff'; tspCtx.fill();
+                tspCtx.strokeStyle = '#2a2a2a'; tspCtx.lineWidth = 1; tspCtx.stroke();
+            });
+
+            if (tspBestPath.length > 0) {
+                tspCtx.strokeStyle = '#4ade80';
+                tspCtx.lineWidth = 2;
+                tspCtx.beginPath();
+                tspCtx.moveTo(tspCities[tspBestPath[0]].x, tspCities[tspBestPath[0]].y);
+                for (let i = 1; i < tspBestPath.length; i++) {
+                    tspCtx.lineTo(tspCities[tspBestPath[i]].x, tspCities[tspBestPath[i]].y);
+                }
+                tspCtx.closePath();
+                tspCtx.stroke();
+            }
+        }
+
+        function shuffle(array) {
+            let arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        function startTSP() {
+            if (tspCities.length < 4 || tspRunning) return;
+            tspRunning = true;
+            tspGeneration = 0;
+            tspBestDist = Infinity;
+            tspBestPath = [];
+
+            let baseOrder = Array.from({ length: tspCities.length }, (_, i) => i);
+            tspPopulation = [];
+            for (let i = 0; i < tspPopSize; i++) { tspPopulation.push(shuffle(baseOrder)); }
+            
+            tspInterval = setInterval(evolveTSP, tspSpeed);
+        }
+
+        function evolveTSP() {
+            tspGeneration++;
+            let currentBestDist = Infinity;
+            let currentBestPath = [];
+
+            tspPopulation.forEach(path => {
+                let d = calcPathLength(path);
+                if (d < tspBestDist) { tspBestDist = d; tspBestPath = path; }
+                if (d < currentBestDist) { currentBestDist = d; currentBestPath = path; }
+            });
+
+            let nextPop = [[...tspBestPath], [...currentBestPath]];
+            while (nextPop.length < tspPopSize) {
+                let child = [...tspBestPath];
+                if (Math.random() < 0.7) {
+                    let i = Math.floor(Math.random() * child.length);
+                    let j = Math.floor(Math.random() * child.length);
+                    [child[i], child[j]] = [child[j], child[i]];
+                }
+                nextPop.push(child);
+            }
+            tspPopulation = nextPop;
+            drawTSP();
+            if (tspGeneration >= 1000) { clearInterval(tspInterval); tspRunning = false; }
+        }
+
+        function resetTSP() {
+            clearInterval(tspInterval);
+            tspRunning = false;
+            tspCities = []; tspPopulation = []; tspBestPath = []; tspBestDist = Infinity; tspGeneration = 0;
+            drawTSP();
+        }
+
+        // --- 5. INITIALIZATION ---
+        window.onload = function() { 
+            setLanguage('hu'); 
+            drawKMeans();
+            animateNN();
+            drawTSP();
+            setTSPSpeed(40);
+
+            const savedTheme = localStorage.getItem("user-theme");
+            const systemPrefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
+            
+            if (savedTheme) setTheme(savedTheme);
+            else if (systemPrefersLight) setTheme("light");
+            else setTheme("dark");
+        };
+    </script>
+</body>
+</html>
