@@ -114,9 +114,9 @@
         <section id="rolam">
             <div class="profile-container">
                 <div class="profile-text">
-                    <h1 id="hero-title">Szoftverfejlesztő</h1>
+                    <h1 id="hero-title">Szia, Szabó-Szikszay Ákos vagyok!</h1>
                     <div class="title-sub" id="hero-subtitle">Mesterséges Intelligencia & Adattudomány</div>
-                    <p id="hero-desc" style="color: var(--text-muted); font-size: 1.05rem;">Adattudományi és mesterséges intelligencia megoldásokra fókuszáló fejlesztő vagyok. Erős algoritmikus és matematikai alapokkal rendelkezem, prediktív modellezés és összetett adatszerkezetek feldolgozása terén.</p>
+                    <p id="hero-desc" style="color: var(--text-muted); font-size: 1.05rem;">Legfőképpen Pythonban tanultam és mélyedtem el az adattudomány és a mesterséges intelligencia világában. Szenvedélyem a prediktív modellek építése és az adatok mögött rejlő minták feltárása.</p>
                 </div>
                 <img class="profile-img" src="profil.jpg" alt="Profil">
             </div>
@@ -130,23 +130,31 @@
                 <div class="project">
                     <img class="project-img-placeholder" src="https://unsplash.com" alt="P1">
                     <div class="project-body">
-                        <div class="project-header"><h3 class="project-title" id="p1-title">Időjárás-Korrekciós Rendszer</h3><span class="project-tag">Python</span></div>
+                        <div class="project-header">
+                            <h3 class="project-title" id="p1-title">Időjárás-Korrekciós Rendszer</h3>
+                            <span class="project-tag">Python</span>
+                        </div>
                         <p class="project-desc" id="p1-desc">Adatelemző modul, amely történeti előrejelzéseket hasonlít össze valós idejű mérési adatokkal, pontosítva a jövőbeli becsléseket.</p>
-                        <div style="border: 1px dashed var(--text-muted); padding: 8px; border-radius: 4px; margin-bottom: 12px; font-size: 0.85rem;">🏆 <span id="p1-badge">Egyetemi Kitüntetéssel elismert projekt</span></div>
+                        <div style="border: 1px dashed var(--text-muted); padding: 8px; border-radius: 4px; margin-bottom: 12px; font-size: 0.85rem;">
+                            🏆 <span id="p1-badge">NJE GAMF Oklevéllel elismert projekt</span>
+                        </div>
                         <ul class="project-tech">
-                            <li id="p1-tech1">JSON adatstruktúrák feldolgozása</li>
-                            <li id="p1-tech2">Dinamikus hibaszámítás időbélyegek alapján</li>
+                            <li id="p1-li1">JSON adatstruktúrák parsingja</li>
+                            <li id="p1-li2">Dinamikus hibaszámítás időbélyegekre</li>
                         </ul>
                     </div>
                 </div>
                 <div class="project">
                     <img class="project-img-placeholder" src="https://unsplash.com" alt="P2">
                     <div class="project-body">
-                        <div class="project-header"><h3 class="project-title" id="p2-title">Snake Játék & Oktatás</h3><span class="project-tag">Python</span></div>
+                        <div class="project-header">
+                            <h3 class="project-title" id="p2-title">Snake Játék & Oktatás</h3>
+                            <span class="project-tag">Python</span>
+                        </div>
                         <p class="project-desc" id="p2-desc">Egyedi logikájú Snake játék, amely oktatási segédanyagként szolgált programozás-módszertani bemutatókon, szemléltetve a tiszta kód elveit.</p>
                         <ul class="project-tech">
-                            <li id="p2-tech1">Rácsalapú mozgás és ütközésvizsgálat</li>
-                            <li id="p2-tech2">Dinamikus pontrendszer és állapotkezelés</li>
+                            <li id="p2-li1">Rács alapú mozgás és ütközésdetektálás</li>
+                            <li id="p2-li2">Dinamikus pontrendszer és állapotkezelés</li>
                         </ul>
                     </div>
                 </div>
@@ -156,10 +164,12 @@
         <section id="ailab">
             <h2 id="sec-ailab-title">MI Kísérleti Labor</h2>
             <div class="project-grid">
-                
                 <div class="project">
                     <div class="project-body">
-                        <div class="project-header"><h3 class="project-title" id="ai1-title">K-Means Klaszterező</h3><span class="project-tag">ML</span></div>
+                        <div class="project-header">
+                            <h3 class="project-title" id="ai1-title">K-Means Klaszterező</h3>
+                            <span class="project-tag" id="badge-ml">ML</span>
+                        </div>
                         <p class="project-desc" id="ai1-desc">Kattints az alábbi sötét mezőbe tetszőleges pontok elhelyezéséhez, majd indítsd el a klaszterezést!</p>
                         <div class="ai-container">
                             <canvas id="kmeansCanvas" class="ai-canvas" width="400" height="250"></canvas>
@@ -174,7 +184,10 @@
 
                 <div class="project">
                     <div class="project-body">
-                        <div class="project-header"><h3 class="project-title" id="ai2-title">Neurális Hálózat építő</h3><span class="project-tag">DL</span></div>
+                        <div class="project-header">
+                            <h3 class="project-title" id="ai2-title">Neurális Hálózat építő</h3>
+                            <span class="project-tag" id="badge-dl">DL</span>
+                        </div>
                         <p class="project-desc" id="ai2-desc">Mély neurális hálózatok adatáramlásának (Forward Propagation) vizuális szimulációja valós időben.</p>
                         <div class="ai-container">
                             <canvas id="nnCanvas" class="ai-canvas" width="400" height="250"></canvas>
@@ -182,14 +195,17 @@
                                 <button class="ai-btn" id="ai2-btn1" onclick="addHiddenLayer()">Réteg +</button>
                                 <button class="ai-btn" id="ai2-btn2" onclick="resetNN()">Alaphelyzet</button>
                             </div>
-                            <div id="nnStats" class="ai-stats">Bemenetek: 3 | Rejtett rétegek száma: 1 | Kimenetek: 2</div>
+                            <div id="nnStats" class="ai-stats">Bemenet: 3 | Rejtett rétegek száma: 1 | Kimenet: 2</div>
                         </div>
                     </div>
                 </div>
 
                 <div class="project">
                     <div class="project-body">
-                        <div class="project-header"><h3 class="project-title" id="ai3-title">Genetikus Útvonaloptimalizáló</h3><span class="project-tag">Evolúciós</span></div>
+                        <div class="project-header">
+                            <h3 class="project-title" id="ai3-title">Genetikus Útvonaloptimalizáló</h3>
+                            <span class="project-tag" id="badge-evo">Evolúciós</span>
+                        </div>
                         <p class="project-desc" id="ai3-desc">Helyezz el kattintással városokat a mezőben, az evolúciós algoritmus pedig megkeresi a legrövidebb körutat.</p>
                         <div class="ai-container">
                             <canvas id="tspCanvas" class="ai-canvas" width="400" height="250"></canvas>
@@ -207,7 +223,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </section>
 
@@ -216,9 +231,9 @@
             <div style="border: 1px solid var(--border); padding: 20px; background-color: var(--card-bg); display: flex; gap: 16px;">
                 <div style="font-size: 1.8rem;">🏆</div>
                 <div>
-                    <h3 style="margin: 0 0 4px 0;" id="a1-title">Egyetemi Kiválósági Kitüntetés</h3>
-                    <div style="font-size: 0.85rem; color: var(--text-muted); font-family: monospace; margin-bottom: 8px;" id="a1-sub">Szakmai elismerés • Szoftver Projekt</div>
-                    <p style="margin: 0; color: var(--text-muted); font-size: 0.95rem;" id="a1-desc">Az időjárás-korrekciós rendszerért odaítélt egyetemi kitüntetés a komplex adatkezelés és modellpontosság elismeréseként.</p>
+                    <h3 style="margin: 0 0 4px 0;" id="a1-title">A GAMF Karért Oklevél</h3>
+                    <div style="font-size: 0.85rem; color: var(--text-muted); font-family: monospace; margin-bottom: 8px;" id="a1-sub">Neumann János Egyetem • GAMF Műszaki és Informatikai Kar</div>
+                    <p style="margin: 0; color: var(--text-muted); font-size: 0.95rem;" id="a1-desc">Elismerés a World Solar Challenge 2025 versenyen végzett mesterséges intelligencia alapú fejlesztési feladatok sikeres elvégzéséért.</p>
                 </div>
             </div>
         </section>
@@ -226,15 +241,31 @@
         <section id="elerhetoseg">
             <h2 id="sec-contact-title">Kapcsolat</h2>
             <div class="contact-info">
-                <p id="contact-text">Keress bizalommal az alábbi elérhetőségeken:</p>
+                <p id="contact-text">Keress bizalommal az alábbi elérhetőségeken vagy küldj közvetlen üzenetet:</p>
                 <p>📧 E-mail: <a href="mailto:szszakos@outlook.hu">szszakos@outlook.hu</a></p>
-                <p>💻 GitHub: <a href="https://github.com/AkosSzSz" target="_blank">https://github.com/AkosSzSz</a></p>
+                <p>💻 GitHub: <a href="https://github.com/AkosSzSz" target="_blank">AkosSzSZ</a></p>
+                
+                <form class="contact-form" action="https://formspree.io/f/moeekzaw" method="POST" style="margin-top: 25px;">
+                    <div style="margin-bottom: 15px;">
+                        <label for="name" id="form-name-label" style="display: block; margin-bottom: 5px; font-size: 0.9rem; color: var(--text-muted);">Név:</label>
+                        <input type="text" id="name" name="name" required style="width: 100%; padding: 10px; background: var(--sidebar-bg); border: 1px solid var(--border); color: var(--text-main); border-radius: 4px;">
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label for="email" id="form-email-label" style="display: block; margin-bottom: 5px; font-size: 0.9rem; color: var(--text-muted);">E-mail cím:</label>
+                        <input type="email" id="email" name="email" required style="width: 100%; padding: 10px; background: var(--sidebar-bg); border: 1px solid var(--border); color: var(--text-main); border-radius: 4px;">
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label for="message" id="form-msg-label" style="display: block; margin-bottom: 5px; font-size: 0.9rem; color: var(--text-muted);">Üzenet:</label>
+                        <textarea id="message" name="message" rows="4" required style="width: 100%; padding: 10px; background: var(--sidebar-bg); border: 1px solid var(--border); color: var(--text-main); border-radius: 4px; resize: vertical;"></textarea>
+                    </div>
+                    <button type="submit" class="ai-btn" id="form-submit-btn" style="padding: 10px 20px; font-size: 0.9rem;">Küldés</button>
+                </form>
             </div>
         </section>
     </main>
 
     <script>
-const t = {
+        const t = {
             hu: {
                 "btn-menu": "☰ Menü",
                 "nav-about": "Rólam",
@@ -243,8 +274,7 @@ const t = {
                 "nav-awards": "Eredmények",
                 "nav-contact": "Kapcsolat",
                 
-                // MAGYARUL: Vezetéknév Keresztnév (Pl. Kovács János)
-                "hero-title": "Szia, Kovács János vagyok!",
+                "hero-title": "Szia, Szabó-Szikszay Ákos vagyok!",
                 "hero-subtitle": "Mesterséges Intelligencia & Adattudomány",
                 "hero-desc": "Legfőképpen Pythonban tanultam és mélyedtem el az adattudomány és a mesterséges intelligencia világában. Szenvedélyem a prediktív modellek építése és az adatok mögött rejlő minták feltárása.",
                 
@@ -256,22 +286,29 @@ const t = {
 
                 "p1-title": "Időjárás-Korrekciós Rendszer",
                 "p1-desc": "Adatelemző modul, amely történeti előrejelzéseket hasonlít össze valós idejű mérési adatokkal, pontosítva a jövőbeli becsléseket.",
-                "p1-badge": "Egyetemi Kitüntetéssel elismert projekt",
+                "p1-badge": "NJE GAMF Oklevéllel elismert projekt",
+                "p1-li1": "JSON adatstruktúrák parsingja",
+                "p1-li2": "Dinamikus hibaszámítás időbélyegekre",
                 
                 "p2-title": "Snake Játék & Oktatás",
                 "p2-desc": "Egyedi logikájú Snake játék, amely oktatási segédanyagként szolgált programozás-módszertani bemutatókon, szemléltetve a tiszta kód elveit.",
+                "p2-li1": "Rács alapú mozgás és ütközésdetektálás",
+                "p2-li2": "Dinamikus pontrendszer és állapotkezelés",
 
                 "ai1-title": "K-Means Klaszterező",
+                "badge-ml": "ML",
                 "ai1-desc": "Kattints az alábbi sötét mezőbe tetszőleges pontok elhelyezéséhez, majd indítsd el a klaszterezést!",
                 "ai1-btn1": "Klaszterezés",
                 "ai1-btn2": "Törlés",
 
                 "ai2-title": "Neurális Hálózat építő",
+                "badge-dl": "DL",
                 "ai2-desc": "Mély neurális hálózatok adatáramlásának (Forward Propagation) vizuális szimulációja valós időben.",
                 "ai2-btn1": "Réteg +",
                 "ai2-btn2": "Alaphelyzet",
 
                 "ai3-title": "Genetikus Útvonaloptimalizáló",
+                "badge-evo": "Evolúciós",
                 "ai3-desc": "Helyezz el kattintással városokat a mezőben, az evolúciós algoritmus pedig megkeresi a legrövidebb körutat.",
                 "ai3-btn1": "Evolúció indítása",
                 "ai3-btn2": "Törlés",
@@ -280,15 +317,19 @@ const t = {
                 "ai3-fast": "Gyors",
                 "ai3-speed-label": "Sebesség:",
 
-                "a1-title": "Egyetemi Kiválósági Kitüntetés",
-                "a1-sub": "Szakmai elismerés • Szoftver Projekt",
-                "a1-desc": "Az időjárás-korrekciós rendszerért odaítélt egyetemi kitüntetés a komplex adatkezelés és modellpontosság elismeréseként.",
+                "a1-title": "A GAMF Karért Oklevél",
+                "a1-sub": "Neumann János Egyetem • GAMF Műszaki és Informatikai Kar",
+                "a1-desc": "Elismerés a World Solar Challenge 2025 versenyen végzett mesterséges intelligencia alapú fejlesztési feladatok sikeres elvégzéséért.",
                 
                 "contact-text": "Keress bizalommal az alábbi elérhetőségeken vagy küldj közvetlen üzenetet:",
                 "form-name-label": "Név:",
                 "form-email-label": "E-mail cím:",
                 "form-msg-label": "Üzenet:",
-                "form-submit-btn": "Küldés"
+                "form-submit-btn": "Küldés",
+
+                "kmeans-stats": "Pontok száma: {p} | Klaszterek száma: {c}",
+                "nn-stats": "Bemenet: {i} | Rejtett rétegek száma: {h} | Kimenet: {o}",
+                "tsp-stats": "Városok: {c} | Legjobb távolság: {d} | Generáció: {g}"
             },
             en: {
                 "btn-menu": "☰ Menu",
@@ -298,8 +339,7 @@ const t = {
                 "nav-awards": "Awards",
                 "nav-contact": "Contact",
                 
-                // ANGOLUL: Keresztnév Vezetéknév (Pl. John Kovacs)
-                "hero-title": "Hi, I'm János Kovács!",
+                "hero-title": "Hi, I'm Ákos Szabó-Szikszay!",
                 "hero-subtitle": "Artificial Intelligence & Data Science",
                 "hero-desc": "I focused my studies primarily on Python, diving deep into data science and artificial intelligence. I'm passionate about building predictive models and uncovering the patterns hidden behind data.",
                 
@@ -311,22 +351,29 @@ const t = {
 
                 "p1-title": "Predictive Weather Correction",
                 "p1-desc": "Data analysis module comparing historical forecasts with real-time measurements to refine future predictions.",
-                "p1-badge": "Project Awarded with University Honors",
+                "p1-badge": "Project Awarded with NJE GAMF Diploma of Merit",
+                "p1-li1": "Parsing JSON data structures",
+                "p1-li2": "Dynamic error calculation for timestamps",
                 
                 "p2-title": "Snake Game & Education",
                 "p2-desc": "A custom Snake game used as a demonstration tool during programming workshops to showcase clean code principles to students.",
+                "p2-li1": "Grid-based movement and collision detection",
+                "p2-li2": "Dynamic scoring system and state management",
 
                 "ai1-title": "K-Means Clustering",
+                "badge-ml": "ML",
                 "ai1-desc": "Click inside the dark area below to place arbitrary points, then start the clustering!",
                 "ai1-btn1": "Cluster",
                 "ai1-btn2": "Clear",
 
                 "ai2-title": "Neural Network Builder",
+                "badge-dl": "DL",
                 "ai2-desc": "Visual real-time simulation of deep neural network data flow (Forward Propagation).",
                 "ai2-btn1": "Layer +",
                 "ai2-btn2": "Reset",
 
                 "ai3-title": "Genetic Route Optimizer",
+                "badge-evo": "Evolutionary",
                 "ai3-desc": "Click to place cities in the field, and the evolutionary algorithm will find the shortest tour.",
                 "ai3-btn1": "Start Evolution",
                 "ai3-btn2": "Clear",
@@ -335,15 +382,19 @@ const t = {
                 "ai3-fast": "Fast",
                 "ai3-speed-label": "Speed:",
 
-                "a1-title": "University Excellence Award",
-                "a1-sub": "Professional Recognition • Software Project",
-                "a1-desc": "University award granted for the weather correction system in recognition of complex data handling and model accuracy.",
+                "a1-title": "GAMF Faculty Diploma of Merit",
+                "a1-sub": "John von Neumann University • GAMF Faculty of Engineering and Computer Science",
+                "a1-desc": "Awarded for successful AI-based software development contributions to the World Solar Challenge 2025 competition.",
                 
                 "contact-text": "Feel free to contact me through the following channels or send a direct message:",
                 "form-name-label": "Name:",
                 "form-email-label": "Email address:",
                 "form-msg-label": "Message:",
-                "form-submit-btn": "Send"
+                "form-submit-btn": "Send",
+
+                "kmeans-stats": "Number of points: {p} | Number of clusters: {c}",
+                "nn-stats": "Input: {i} | Hidden layers: {h} | Output: {o}",
+                "tsp-stats": "Cities: {c} | Best distance: {d} | Generation: {g}"
             },
             de: {
                 "btn-menu": "☰ Menü",
@@ -353,8 +404,7 @@ const t = {
                 "nav-awards": "Erfolge",
                 "nav-contact": "Kontakt",
                 
-                // NÉMETÜL: Keresztnév Vezetéknév (Pl. John Kovacs)
-                "hero-title": "Hi, ich bin János Kovács!",
+                "hero-title": "Hallo, ich bin Ákos Szabó-Szikszay!",
                 "hero-subtitle": "Künstliche Intelligenz & Datenwissenschaft",
                 "hero-desc": "Ich habe mich hauptsächlich auf Python konzentriert und mein Wissen in den Bereichen Datenwissenschaft und künstliche Intelligenz vertieft. Es macht mir Spaß, prädiktive Modelle zu entwickeln und Muster in Daten zu entdecken.",
                 
@@ -366,22 +416,29 @@ const t = {
 
                 "p1-title": "Wetterkorrektursystem",
                 "p1-desc": "Datenanalysemodul, das historische Vorhersagen mit Echtzeit-Messdaten vergleicht, um zukünftige Schätzungen zu präzisieren.",
-                "p1-badge": "Mit Universitätspreis ausgezeichnet",
+                "p1-badge": "Mit dem NJE GAMF Verdienstdiplom ausgezeichnetes Projekt",
+                "p1-li1": "Parsing von JSON-Datenstrukturen",
+                "p1-li2": "Dynamische Fehlerberechnung für Zeitstempel",
                 
                 "p2-title": "Snake Spiel & Bildung",
                 "p2-desc": "Ein Snake-Spiel, das als Demonstrationswerkzeug in Programmierworkshops diente, um Schülern Clean-Code-Prinzipien zu vermitteln.",
+                "p2-li1": "Gitterbasierte Bewegung und Kollisionserkennung",
+                "p2-li2": "Dynamisches Punktesystem und Zustandsverwaltung",
 
                 "ai1-title": "K-Means Clustering",
+                "badge-ml": "ML",
                 "ai1-desc": "Klicken Sie in den dunklen Bereich unten, um Punkte zu setzen, und starten Sie das Clustering!",
                 "ai1-btn1": "Clustern",
                 "ai1-btn2": "Löschen",
 
                 "ai2-title": "Neuronales Netzwerk-Builder",
+                "badge-dl": "DL",
                 "ai2-desc": "Visuelle Echtzeitsimulation des Datenflusses tiefer neuronaler Netze (Forward Propagation).",
                 "ai2-btn1": "Schicht +",
                 "ai2-btn2": "Zurücksetzen",
 
                 "ai3-title": "Genetischer Route-Optimizer",
+                "badge-evo": "Evolutionär",
                 "ai3-desc": "Plazieren Sie Städte durch Klicken, und der Evolutionsalgorithmus findet die kürzeste Rundreise.",
                 "ai3-btn1": "Evolution starten",
                 "ai3-btn2": "Löschen",
@@ -390,31 +447,21 @@ const t = {
                 "ai3-fast": "Schnell",
                 "ai3-speed-label": "Geschwindigkeit:",
 
-                "a1-title": "Universität-Exzellenzpreis",
-                "a1-sub": "Professionelle Anerkennung • Softwareprojekt",
-                "a1-desc": "Universitätspreis für das Wetterkorrektursystem in Anerkennung komplexer Datenverarbeitung und Modellgenauigkeit.",
+                "a1-title": "Verdienstdiplom der GAMF-Fakultät",
+                "a1-sub": "John von Neumann Universität • GAMF-Fakultät für Ingenieurwesen und Informatik",
+                "a1-desc": "Auszeichnung für erfolgreiche KI-basierte Entwicklungsarbeiten im Rahmen des World Solar Challenge 2025 Wettbewerbs.",
                 
                 "contact-text": "Kontaktieren Sie mich gerne über die folgenden Kanäle oder senden Sie eine direkte Nachricht:",
                 "form-name-label": "Name:",
                 "form-email-label": "E-Mail-Adresse:",
                 "form-msg-label": "Nachricht:",
-                "form-submit-btn": "Senden"
+                "form-submit-btn": "Senden",
+
+                "kmeans-stats": "Anzahl der Punkte: {p} | Anzahl der Cluster: {c}",
+                "nn-stats": "Eingabe: {i} | Versteckte Schichten: {h} | Ausgabe: {o}",
+                "tsp-stats": "Städte: {c} | Beste Distanz: {d} | Generation: {g}"
             }
         };
-
-        function toggleSidebar() { document.getElementById("mySidebar").classList.toggle("active"); }
-
-        function toggleTheme() {
-            const current = document.documentElement.getAttribute("data-theme");
-            const newTheme = current === "light" ? "dark" : "light";
-            setTheme(newTheme);
-        }
-
-        function setTheme(theme) {
-            if (theme === "light") document.documentElement.setAttribute("data-theme", "light");
-            else document.documentElement.removeAttribute("data-theme");
-            localStorage.setItem("user-theme", theme);
-        }
 
         function setLanguage(lang) {
             for (const k in t[lang]) {
@@ -431,6 +478,21 @@ const t = {
             drawTSP();
         }
 
+        function toggleSidebar() { document.getElementById("mySidebar").classList.toggle("active"); }
+
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute("data-theme");
+            const newTheme = current === "light" ? "dark" : "light";
+            setTheme(newTheme);
+        }
+
+        function setTheme(theme) {
+            if (theme === "light") document.documentElement.setAttribute("data-theme", "light");
+            else document.documentElement.removeAttribute("data-theme");
+            localStorage.setItem("user-theme", theme);
+        }
+
+        // --- K-MEANS LOGIKA ---
         const kmCanvas = document.getElementById('kmeansCanvas');
         const kmCtx = kmCanvas ? kmCanvas.getContext('2d') : null;
         let kmPoints = [];
@@ -454,10 +516,9 @@ const t = {
             kmCtx.clearRect(0, 0, kmCanvas.width, kmCanvas.height);
             
             const lang = document.documentElement.lang || 'hu';
-            const template = t[lang]["stat-kmeans"] || t['hu']["stat-kmeans"];
-            document.getElementById('kmeansStats').innerText = template
-                .replace('{points}', kmPoints.length)
-                .replace('{clusters}', 3);
+            document.getElementById('kmeansStats').innerText = t[lang]["kmeans-stats"]
+                .replace('{p}', kmPoints.length)
+                .replace('{c}', 3);
             
             kmPoints.forEach(p => {
                 kmCtx.beginPath(); kmCtx.arc(p.x, p.y, 5, 0, Math.PI * 2);
@@ -502,10 +563,10 @@ const t = {
 
         function resetKMeans() { kmPoints = []; kmCentroids = []; drawKMeans(); }
 
+        // --- NEURÁLIS HÁLÓ LOGIKA ---
         const nnCanvas = document.getElementById('nnCanvas');
         const nnCtx = nnCanvas ? nnCanvas.getContext('2d') : null;
-        let nnLayers = [3, 4, 2];
-        let animationFrame;
+        let nnLayers = new Array(3, 4, 2);
         let pulseOffset = 0;
 
         function drawNN() {
@@ -513,19 +574,18 @@ const t = {
             nnCtx.clearRect(0, 0, nnCanvas.width, nnCanvas.height);
             
             const lang = document.documentElement.lang || 'hu';
-            const template = t[lang]["stat-nn"] || t['hu']["stat-nn"];
-            document.getElementById('nnStats').innerText = template
-                .replace('{inputs}', nnLayers[0])
-                .replace('{hidden}', nnLayers.length - 2)
-                .replace('{outputs}', nnLayers[nnLayers.length - 1]);
+            document.getElementById('nnStats').innerText = t[lang]["nn-stats"]
+                .replace('{i}', nnLayers[0])
+                .replace('{h}', nnLayers.length - 2)
+                .replace('{o}', nnLayers[nnLayers.length - 1]);
             
             let layerSpacing = nnCanvas.width / (nnLayers.length + 1);
-            let positions = [];
+            let positions = new Array();
 
             nnLayers.forEach((count, lIdx) => {
                 let x = layerSpacing * (lIdx + 1);
                 let nodeSpacing = nnCanvas.height / (count + 1);
-                let layerPos = [];
+                let layerPos = new Array();
                 for (let i = 0; i < count; i++) {
                     layerPos.push({ x, y: nodeSpacing * (i + 1) });
                 }
@@ -557,16 +617,17 @@ const t = {
             });
         }
 
-        function animateNN() { pulseOffset += 0.015; drawNN(); animationFrame = requestAnimationFrame(animateNN); }
+        function animateNN() { pulseOffset += 0.015; drawNN(); requestAnimationFrame(animateNN); }
         function addHiddenLayer() { if(nnLayers.length < 5) { nnLayers.splice(nnLayers.length - 1, 0, 4); } drawNN(); }
-        function resetNN() { nnLayers = [3, 4, 2]; drawNN(); }
+        function resetNN() { nnLayers = new Array(3, 4, 2); drawNN(); }
 
+        // --- GENETIKUS ALGORITMUS LOGIKA ---
         const tspCanvas = document.getElementById('tspCanvas');
         const tspCtx = tspCanvas ? tspCanvas.getContext('2d') : null;
-        let tspCities = [];
-        let tspPopulation = [];
+        let tspCities = new Array();
+        let tspPopulation = new Array();
         let tspPopSize = 150;
-        let tspBestPath = [];
+        let tspBestPath = new Array();
         let tspBestDist = Infinity;
         let tspGeneration = 0;
         let tspRunning = false;
@@ -617,13 +678,11 @@ const t = {
             tspCtx.clearRect(0, 0, tspCanvas.width, tspCanvas.height);
             
             const lang = document.documentElement.lang || 'hu';
-            const template = t[lang]["stat-tsp"] || t['hu']["stat-tsp"];
             const distText = tspBestDist === Infinity ? '-' : Math.round(tspBestDist) + ' px';
-            
-            document.getElementById('tspStats').innerText = template
-                .replace('{cities}', tspCities.length)
-                .replace('{distance}', distText)
-                .replace('{generation}', tspGeneration);
+            document.getElementById('tspStats').innerText = t[lang]["tsp-stats"]
+                .replace('{c}', tspCities.length)
+                .replace('{d}', distText)
+                .replace('{g}', tspGeneration);
 
             tspCities.forEach(c => {
                 tspCtx.beginPath(); tspCtx.arc(c.x, c.y, 6, 0, Math.PI * 2);
@@ -658,10 +717,10 @@ const t = {
             tspRunning = true;
             tspGeneration = 0;
             tspBestDist = Infinity;
-            tspBestPath = [];
+            tspBestPath = new Array();
 
             let baseOrder = Array.from({ length: tspCities.length }, (_, i) => i);
-            tspPopulation = [];
+            tspPopulation = new Array();
             for (let i = 0; i < tspPopSize; i++) { tspPopulation.push(shuffle(baseOrder)); }
             
             tspInterval = setInterval(evolveTSP, tspSpeed);
@@ -670,7 +729,7 @@ const t = {
         function evolveTSP() {
             tspGeneration++;
             let currentBestDist = Infinity;
-            let currentBestPath = [];
+            let currentBestPath = new Array();
 
             tspPopulation.forEach(path => {
                 let d = calcPathLength(path);
@@ -678,7 +737,7 @@ const t = {
                 if (d < currentBestDist) { currentBestDist = d; currentBestPath = path; }
             });
 
-            let nextPop = [[...tspBestPath], [...currentBestPath]];
+            let nextPop = new Array([...tspBestPath], [...currentBestPath]);
             while (nextPop.length < tspPopSize) {
                 let child = [...tspBestPath];
                 if (Math.random() < 0.7) {
@@ -700,6 +759,7 @@ const t = {
             drawTSP();
         }
 
+        // --- INICIALIZÁLÁS ---
         window.onload = function() { 
             setLanguage('hu'); 
             drawKMeans();
