@@ -2,660 +2,1203 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Szoftverfejlesztő Portfólió & AI Lab</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Szabó-Szikszay Ákos | Data Science & AI</title>
+    <meta name="description" content="Portfolio of Ákos Szabó-Szikszay: data science and artificial intelligence projects in Python.">
     <style>
+        * { box-sizing: border-box; }
+
         :root {
-            --bg: #121212;
-            --sidebar-bg: #1a1a1a;
-            --card-bg: rgba(255, 255, 255, 0.03);
-            --text-main: #ffffff;
-            --text-muted: #a0a0a0;
-            --border: #2a2a2a;
-            --accent: #ffffff;
-            --sidebar-width: 260px;
-        }
-        [data-theme="light"] {
             --bg: #ffffff;
-            --sidebar-bg: #f5f5f5;
-            --card-bg: rgba(0, 0, 0, 0.02);
-            --text-main: #000000;
-            --text-muted: #666666;
-            --border: #e0e0e0;
-            --accent: #000000;
+            --surface: #f5f6f8;
+            --text: #1a2233;
+            --text-muted: #5b6475;
+            --border: #dde1e8;
+            --accent: #0b5cad;
+            --accent-text: #fff;
+            --success: #1b7f4b;
+            --radius: 6px;
         }
-        *, *::before, *::after { box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
+
+        :root[data-theme="dark"] {
+            --bg: #12151a;
+            --surface: #1a1e25;
+            --text: #e8ebf0;
+            --text-muted: #9aa3b2;
+            --border: #2b313b;
+            --accent: #6ea8fe;
+            --accent-text: #0b1220;
+            --success: #4ade80;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 72px;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: var(--bg); color: var(--text-main);
-            line-height: 1.6; margin: 0; padding: 0; overflow-x: hidden;
-            transition: background-color 0.3s, color 0.3s;
+            margin: 0;
+            font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+            line-height: 1.65;
+            color: var(--text);
+            background: var(--bg);
         }
-        .sidebar {
-            position: fixed; top: 0; left: calc(-1 * var(--sidebar-width));
-            width: var(--sidebar-width); height: 100vh; background-color: var(--sidebar-bg);
-            border-right: 1px solid var(--border); transition: left 0.3s; z-index: 1000; padding: 60px 24px;
+
+        a { color: var(--accent); }
+        :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+        h1, h2, h3 { margin: 0; line-height: 1.25; }
+        h1 { font-size: clamp(2rem, 5vw, 2.75rem); }
+        h2 { font-size: 1.5rem; padding-bottom: 10px; margin-bottom: 24px; border-bottom: 1px solid var(--border); }
+        h3 { font-size: 1.1rem; }
+        p { margin: 0 0 1em; }
+
+        section { padding-top: 64px; }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px;
         }
-        .sidebar.active { left: 0 !important; }
-        .close-btn {
-            background: none; border: none; color: var(--text-muted);
-            font-size: 1.5rem; cursor: pointer; position: absolute; top: 20px; right: 20px;
+
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: var(--bg);
+            border-bottom: 1px solid var(--border);
         }
-        .menu-list { list-style: none; padding: 0; margin: 0; }
-        .menu-list li { margin-bottom: 20px; }
-        .menu-list a { color: var(--text-muted); text-decoration: none; font-size: 1.05rem; display: block; }
-        .menu-list a:hover { color: var(--accent); }
-        .menu-toggle {
-            position: fixed; top: 25px; left: 25px; background-color: var(--sidebar-bg);
-            border: 1px solid var(--border); color: var(--text-main); padding: 10px 16px;
-            border-radius: 4px; cursor: pointer; z-index: 900; font-size: 0.9rem;
+
+        .header-inner {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px 24px;
+            padding-top: 12px;
+            padding-bottom: 12px;
         }
-        .controls-container { position: fixed; top: 25px; right: 25px; display: flex; gap: 12px; z-index: 900; }
-        .theme-toggle, .lang-btn {
-            background-color: var(--sidebar-bg); border: 1px solid var(--border);
-            color: var(--text-main); padding: 10px 14px; border-radius: 4px; cursor: pointer; font-size: 0.85rem;
+
+        .brand { font-weight: 600; color: var(--text); text-decoration: none; margin-right: auto; }
+        .main-nav { display: flex; flex-wrap: wrap; gap: 4px 20px; }
+        .main-nav a { color: var(--text-muted); text-decoration: none; font-size: .95rem; }
+        .main-nav a:hover { color: var(--accent); }
+        .header-tools { display: flex; align-items: center; gap: 10px; }
+
+        .lang-switch { display: flex; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+        .lang-switch button {
+            font: inherit;
+            font-size: .8rem;
+            padding: 4px 10px;
+            border: 0;
+            background: none;
+            color: var(--text-muted);
+            cursor: pointer;
         }
-        .lang-btn.active { background-color: var(--text-main); color: var(--bg); border-color: var(--text-main); }
-        .main-content { width: 100%; max-width: 900px; margin: 0 auto; padding: 120px 24px 80px 24px; }
-        section { padding: 40px 0; border-bottom: 1px solid var(--border); }
-        section:last-child { border-bottom: none; }
-        .profile-container { display: flex; flex-wrap: wrap; gap: 40px; align-items: center; }
-        .profile-text { flex: 1; min-width: 280px; }
-        .profile-img { width: 180px; height: 180px; border-radius: 4px; border: 1px solid var(--border); object-fit: cover; }
-        h1 { font-size: 2.5rem; margin: 0 0 10px 0; letter-spacing: -0.03em; }
-        .title-sub { color: var(--text-muted); font-size: 1.2rem; margin-bottom: 20px; font-family: monospace; }
-        h2 { font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 30px; }
-        .skills-list { display: flex; flex-wrap: wrap; gap: 10px; padding: 0; list-style: none; }
-        .skills-list li { font-size: 0.85rem; border: 1px solid var(--border); padding: 6px 14px; border-radius: 4px; font-family: monospace; }
-        .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 350px), 1fr)); gap: 24px; }
-        .project { border: 1px solid var(--border); border-radius: 4px; background-color: var(--card-bg); overflow: hidden; display: flex; flex-direction: column; margin-bottom: 24px; }
-        .project-img-placeholder { width: 100%; height: 160px; object-fit: cover; border-bottom: 1px solid var(--border); }
-        .project-body { padding: 20px; flex: 1; display: flex; flex-direction: column; }
-        .project-header { display: flex; justify-content: space-between; margin-bottom: 12px; }
-        .project-title { font-size: 1.2rem; margin: 0; }
-        .project-tag { font-size: 0.8rem; color: var(--text-muted); font-family: monospace; }
-        .project-desc { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 16px; flex: 1; }
-        .project-tech { font-size: 0.85rem; color: var(--text-muted); padding-left: 20px; }
-        .contact-info a { color: var(--text-main); text-decoration: underline; }
-        
-        .ai-container { margin-top: 20px; border: 1px solid var(--border); border-radius: 4px; background: var(--sidebar-bg); padding: 15px; display: flex; flex-direction: column; gap: 10px; }
-        .ai-canvas { width: 100%; height: 250px; background: #0a0a0a; border: 1px solid var(--border); border-radius: 2px; cursor: crosshair; }
-        [data-theme="light"] .ai-canvas { background: #fafafa; }
-        .ai-btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
-        .ai-btn { background: var(--bg); border: 1px solid var(--border); color: var(--text-main); padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-family: monospace; }
-        .ai-btn:hover { background: var(--text-main); color: var(--bg); }
-        .ai-stats { font-family: monospace; font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; }
-        @media (max-width: 600px) { .profile-container { flex-direction: column-reverse; text-align: center; } .main-content { padding-top: 100px; } }
+        .lang-switch button[aria-pressed="true"] { background: var(--accent); color: var(--accent-text); }
+
+        .icon-button {
+            width: 32px;
+            height: 32px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: none;
+            color: var(--text);
+            cursor: pointer;
+        }
+
+        .button {
+            display: inline-block;
+            font: inherit;
+            font-size: .95rem;
+            padding: 9px 18px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--bg);
+            color: var(--text);
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .button:hover { border-color: var(--accent); color: var(--accent); }
+        .button.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-text); }
+        .button.primary:hover { opacity: .9; color: var(--accent-text); }
+        .button.small { font-size: .85rem; padding: 5px 12px; }
+        .button.active { border-color: var(--accent); color: var(--accent); background: var(--surface); }
+
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 40px;
+            padding-top: 72px;
+        }
+        .hero-text { flex: 1 1 360px; }
+        .role { font-size: 1.2rem; color: var(--accent); margin: 8px 0 16px; }
+        .summary { max-width: 56ch; color: var(--text-muted); }
+        .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 24px 0 32px; }
+
+        .small-heading { font-size: .95rem; color: var(--text-muted); border: 0; padding: 0; margin-bottom: 10px; }
+
+        .skills { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+        .skills li {
+            padding: 3px 12px;
+            font-size: .9rem;
+            border: 1px solid var(--border);
+            border-radius: 99px;
+            background: var(--surface);
+        }
+        .skills .primary-skill { border-color: var(--accent); color: var(--accent); font-weight: 600; }
+
+        .portrait {
+            width: 220px;
+            height: 220px;
+            object-fit: cover;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            background: var(--surface);
+        }
+
+        .project { padding: 20px 0; border-bottom: 1px solid var(--border); }
+        .project:last-child { border-bottom: 0; }
+        .project > header { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+        .project ul { margin: 0 0 12px; padding-left: 1.2em; color: var(--text-muted); }
+        .project-note { color: var(--text-muted); font-size: .92rem; }
+
+        .award-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--accent);
+            background: rgba(11, 92, 173, 0.1);
+            border: 1px solid var(--accent);
+            padding: 4px 12px;
+            border-radius: var(--radius);
+            margin-top: 6px;
+        }
+
+        :root[data-theme="dark"] .award-tag {
+            background: rgba(110, 168, 254, 0.15);
+        }
+		
+        .tag { font-size: .8rem; color: var(--text-muted); border: 1px solid var(--border); border-radius: 4px; padding: 1px 8px; }
+
+        .award-card {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            align-items: center;
+            background: var(--surface);
+            border: 1px solid var(--accent);
+            border-left: 5px solid var(--accent);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-top: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .award-content {
+            flex: 1 1 300px;
+        }
+
+        .award-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--accent);
+            background: rgba(11, 92, 173, 0.1);
+            padding: 4px 10px;
+            border-radius: 99px;
+            margin-bottom: 12px;
+        }
+
+        :root[data-theme="dark"] .award-badge {
+            background: rgba(110, 168, 254, 0.15);
+        }
+
+        .award-image-wrapper {
+            flex: 0 0 160px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .award-image {
+            width: 100%;
+            max-width: 160px;
+            height: auto;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            object-fit: cover;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .section-intro { color: var(--text-muted); max-width: 60ch; }
+
+        .lab-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr));
+            gap: 24px;
+            margin-top: 24px;
+        }
+        .lab-card { padding: 20px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
+        .lab-card p { color: var(--text-muted); font-size: .92rem; margin: 6px 0 12px; }
+        .lab-card canvas {
+            display: block;
+            width: 100%;
+            height: auto;
+            aspect-ratio: 8 / 5;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            cursor: crosshair;
+        }
+        .lab-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 12px; }
+        .lab-label { font-size: .85rem; color: var(--text-muted); }
+        .lab-card p.lab-stats { font-size: .85rem; margin: 10px 0 0; }
+
+        form { max-width: 520px; }
+        label { display: block; margin-bottom: 4px; font-size: .92rem; color: var(--text-muted); }
+        input, textarea {
+            width: 100%;
+            font: inherit;
+            padding: 10px 12px;
+            margin-bottom: 16px;
+            background: var(--bg);
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+        }
+        input:focus, textarea:focus { border-color: var(--accent); }
+        textarea { resize: vertical; }
+
+        .page-end {
+            margin-top: 80px;
+            padding: 24px 0;
+            border-top: 1px solid var(--border);
+            font-size: .9rem;
+            color: var(--text-muted);
+        }
+        .page-end .container { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; }
+
+        @media (max-width: 640px) {
+            .hero { flex-direction: column-reverse; align-items: flex-start; }
+            .portrait { width: 150px; height: 150px; }
+        }
+
+        @media (max-width: 540px) {
+            .award-card {
+                flex-direction: column-reverse;
+                align-items: flex-start;
+            }
+            .award-image-wrapper {
+                width: 100%;
+                justify-content: center;
+            }
+            .award-image {
+                max-width: 200px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+        }
     </style>
 </head>
 <body>
-    <button class="menu-toggle" id="btn-menu" onclick="toggleSidebar()">☰ Menü</button>
-    
-    <div class="controls-container">
-        <button class="lang-btn active" id="lang-hu" onclick="setLanguage('hu')">HU</button>
-        <button class="lang-btn" id="lang-en" onclick="setLanguage('en')">EN</button>
-        <button class="lang-btn" id="lang-de" onclick="setLanguage('de')">DE</button>
-        <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
-    </div>
 
-    <aside class="sidebar" id="mySidebar">
-        <button class="close-btn" onclick="toggleSidebar()">✕</button>
-        <ul class="menu-list">
-            <li><a href="#rolam" id="nav-about" onclick="toggleSidebar()">Rólam</a></li>
-            <li><a href="#galeria" id="nav-gallery" onclick="toggleSidebar()">Projektek</a></li>
-            <li><a href="#ailab" id="nav-ailab" onclick="toggleSidebar()">MI Labor</a></li>
-            <li><a href="#eredmenyek" id="nav-awards" onclick="toggleSidebar()">Eredmények</a></li>
-            <li><a href="#elerhetoseg" id="nav-contact" onclick="toggleSidebar()">Kapcsolat</a></li>
-        </ul>
-    </aside>
+    <header class="site-header">
+        <div class="container header-inner">
+            <a class="brand" href="#top" data-i18n="name"></a>
 
-    <main class="main-content">
-        <section id="rolam">
-            <div class="profile-container">
-                <div class="profile-text">
-                    <h1 id="hero-title">Szia, Szabó-Szikszay Ákos vagyok!</h1>
-                    <div class="title-sub" id="hero-subtitle">Mesterséges Intelligencia & Adattudomány</div>
-                    <p id="hero-desc" style="color: var(--text-muted); font-size: 1.05rem;">Legfőképpen Pythonban tanultam és mélyedtem el az adattudomány és a mesterséges intelligencia világában. Szenvedélyem a prediktív modellek építése és az adatok mögött rejlő minták feltárása.</p>
+            <nav class="main-nav" aria-label="Main">
+                <a href="#about" data-i18n="nav-about"></a>
+                <a href="#projects" data-i18n="nav-projects"></a>
+                <a href="#ailab" data-i18n="nav-lab"></a>
+                <a href="#awards" data-i18n="nav-awards"></a>
+                <a href="#contact" data-i18n="nav-contact"></a>
+            </nav>
+
+            <div class="header-tools">
+                <div class="lang-switch" role="group" aria-label="Language">
+                    <button type="button" data-lang="hu">HU</button>
+                    <button type="button" data-lang="en">EN</button>
+                    <button type="button" data-lang="de">DE</button>
                 </div>
-                <img class="profile-img" src="profil.jpg" alt="Profil">
+                <button type="button" id="theme-toggle" class="icon-button" aria-label="Toggle light and dark theme">◐</button>
             </div>
-            <h2 id="sec-skills-title">Készségek</h2>
-            <ul class="skills-list"><li>Python</li><li>C++</li><li>C#</li><li>Java</li><li>JavaScript</li></ul>
+        </div>
+    </header>
+
+    <main id="top">
+
+        <section class="hero container" id="about">
+            <div class="hero-text">
+                <h1 data-i18n="name"></h1>
+                <p class="role" data-i18n="role"></p>
+                <p class="summary" data-i18n="summary"></p>
+
+                <div class="hero-actions">
+                    <a class="button primary" href="mailto:szszakos@outlook.hu" data-i18n="btn-email"></a>
+                    <a class="button" href="https://github.com/AkosSzSz" target="_blank" rel="noopener">GitHub</a>
+                </div>
+
+                <h2 class="small-heading" data-i18n="skills-h"></h2>
+                <ul class="skills">
+                    <li class="primary-skill">Python</li>
+                    <li>C++</li>
+                    <li>C#</li>
+                    <li>Java</li>
+                    <li>JavaScript</li>
+                </ul>
+            </div>
+
+            <img class="portrait" src="profil.jpg" alt="Portrait of Ákos Szabó-Szikszay" width="220" height="220">
         </section>
 
-        <section id="galeria">
-            <h2 id="sec-gallery-title">Projektek</h2>
-            <div class="project-grid">
-                <div class="project">
-                    <img class="project-img-placeholder" src="https://unsplash.com" alt="P1">
-                    <div class="project-body">
-                        <div class="project-header">
-                            <h3 class="project-title" id="p1-title">Időjárás-Korrekciós Rendszer</h3>
-                            <span class="project-tag">Python</span>
-                        </div>
-                        <p class="project-desc" id="p1-desc">Adatelemző modul, amely történeti előrejelzéseket hasonlít össze valós idejű mérési adatokkal, pontosítva a jövőbeli becsléseket.</p>
-                        <div style="border: 1px dashed var(--text-muted); padding: 8px; border-radius: 4px; margin-bottom: 12px; font-size: 0.85rem;">
-                            🏆 <span id="p1-badge">NJE GAMF Oklevéllel elismert projekt</span>
-                        </div>
-                        <ul class="project-tech">
-                            <li id="p1-li1">JSON adatstruktúrák parsingja</li>
-                            <li id="p1-li2">Dinamikus hibaszámítás időbélyegekre</li>
-                        </ul>
-                    </div>
+        <section class="container" id="projects">
+            <h2 data-i18n="projects-h"></h2>
+
+            <article class="project">
+                <header>
+                    <h3 data-i18n="p1-title"></h3>
+                    <span class="tag">Python</span>
+                </header>
+                <p data-i18n="p1-desc"></p>
+                <ul>
+                    <li data-i18n="p1-li1"></li>
+                    <li data-i18n="p1-li2"></li>
+                    <li data-i18n="p1-li3"></li>
+                </ul>
+                <div class="award-tag">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="8" r="7"></circle>
+                        <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+                    </svg>
+                    <span data-i18n="p1-note"></span>
                 </div>
-                <div class="project">
-                    <img class="project-img-placeholder" src="https://unsplash.com" alt="P2">
-                    <div class="project-body">
-                        <div class="project-header">
-                            <h3 class="project-title" id="p2-title">Snake Játék & Oktatás</h3>
-                            <span class="project-tag">Python</span>
-                        </div>
-                        <p class="project-desc" id="p2-desc">Egyedi logikájú Snake játék, amely oktatási segédanyagként szolgált programozás-módszertani bemutatókon, szemléltetve a tiszta kód elveit.</p>
-                        <ul class="project-tech">
-                            <li id="p2-li1">Rács alapú mozgás és ütközésdetektálás</li>
-                            <li id="p2-li2">Dinamikus pontrendszer és állapotkezelés</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+            </article>
+
+            <article class="project">
+                <header>
+                    <h3 data-i18n="p2-title"></h3>
+                    <span class="tag">Python, pygame</span>
+                </header>
+                <p data-i18n="p2-desc"></p>
+                <ul>
+                    <li data-i18n="p2-li1"></li>
+                    <li data-i18n="p2-li2"></li>
+                    <li data-i18n="p2-li3"></li>
+                </ul>
+            </article>
         </section>
 
-        <section id="ailab">
-            <h2 id="sec-ailab-title">MI Kísérleti Labor</h2>
-            <div class="project-grid">
-                <div class="project">
-                    <div class="project-body">
-                        <div class="project-header">
-                            <h3 class="project-title" id="ai1-title">K-Means Klaszterező</h3>
-                            <span class="project-tag" id="badge-ml">ML</span>
-                        </div>
-                        <p class="project-desc" id="ai1-desc">Kattints az alábbi sötét mezőbe tetszőleges pontok elhelyezéséhez, majd indítsd el a klaszterezést!</p>
-                        <div class="ai-container">
-                            <canvas id="kmeansCanvas" class="ai-canvas" width="400" height="250"></canvas>
-                            <div class="ai-btn-row">
-                                <button class="ai-btn" id="ai1-btn1" onclick="runKMeans()">Klaszterezés</button>
-                                <button class="ai-btn" id="ai1-btn2" onclick="resetKMeans()">Törlés</button>
-                            </div>
-                            <div id="kmeansStats" class="ai-stats">Pontok száma: 0 | Klaszterek száma: 3</div>
-                        </div>
-                    </div>
-                </div>
+        <section class="container" id="ailab">
+            <h2 data-i18n="lab-h"></h2>
+            <p class="section-intro" data-i18n="lab-intro"></p>
 
-                <div class="project">
-                    <div class="project-body">
-                        <div class="project-header">
-                            <h3 class="project-title" id="ai2-title">Neurális Hálózat építő</h3>
-                            <span class="project-tag" id="badge-dl">DL</span>
-                        </div>
-                        <p class="project-desc" id="ai2-desc">Mély neurális hálózatok adatáramlásának (Forward Propagation) vizuális szimulációja valós időben.</p>
-                        <div class="ai-container">
-                            <canvas id="nnCanvas" class="ai-canvas" width="400" height="250"></canvas>
-                            <div class="ai-btn-row">
-                                <button class="ai-btn" id="ai2-btn1" onclick="addHiddenLayer()">Réteg +</button>
-                                <button class="ai-btn" id="ai2-btn2" onclick="resetNN()">Alaphelyzet</button>
-                            </div>
-                            <div id="nnStats" class="ai-stats">Bemenet: 3 | Rejtett rétegek száma: 1 | Kimenet: 2</div>
-                        </div>
-                    </div>
-                </div>
+            <div class="lab-grid">
 
-                <div class="project">
-                    <div class="project-body">
-                        <div class="project-header">
-                            <h3 class="project-title" id="ai3-title">Genetikus Útvonaloptimalizáló</h3>
-                            <span class="project-tag" id="badge-evo">Evolúciós</span>
-                        </div>
-                        <p class="project-desc" id="ai3-desc">Helyezz el kattintással városokat a mezőben, az evolúciós algoritmus pedig megkeresi a legrövidebb körutat.</p>
-                        <div class="ai-container">
-                            <canvas id="tspCanvas" class="ai-canvas" width="400" height="250"></canvas>
-                            <div class="ai-btn-row">
-                                <button class="ai-btn" id="ai3-btn1" onclick="startTSP()">Evolúció indítása</button>
-                                <button class="ai-btn" id="ai3-btn2" onclick="resetTSP()">Törlés</button>
-                            </div>
-                            <div class="ai-btn-row" style="margin-top: 5px;">
-                                <span id="ai3-speed-label" style="font-family: monospace; font-size: 0.8rem; color: var(--text-muted); align-self: center;">Sebesség:</span>
-                                <button class="ai-btn" id="ai3-slow" onclick="setTSPSpeed(150)">Lassú</button>
-                                <button class="ai-btn" id="ai3-mid" onclick="setTSPSpeed(40)">Közepes</button>
-                                <button class="ai-btn" id="ai3-fast" onclick="setTSPSpeed(5)">Gyors</button>
-                            </div>
-                            <div id="tspStats" class="ai-stats">Városok: 0 | Legjobb távolság: - | Generáció: 0</div>
-                        </div>
+                <article class="lab-card">
+                    <h3 data-i18n="km-title"></h3>
+                    <p data-i18n="km-desc"></p>
+                    <canvas id="kmeans-canvas" width="400" height="250" aria-label="K-means clustering canvas"></canvas>
+                    <div class="lab-controls">
+                        <button type="button" class="button small" id="kmeans-step" data-i18n="km-step"></button>
+                        <button type="button" class="button small" id="kmeans-run" data-i18n="km-run"></button>
+                        <button type="button" class="button small" id="kmeans-clear" data-i18n="clear"></button>
+                        <button type="button" class="button small" id="kmeans-k-less" aria-label="K -1">K −</button>
+                        <button type="button" class="button small" id="kmeans-k-more" aria-label="K +1">K +</button>
                     </div>
-                </div>
-            </div>
-        </section>
+                    <p class="lab-stats" id="kmeans-stats" aria-live="polite"></p>
+                </article>
 
-        <section id="eredmenyek">
-            <h2 id="sec-awards-title">Eredmények</h2>
-            <div style="border: 1px solid var(--border); padding: 20px; background-color: var(--card-bg); display: flex; gap: 16px;">
-                <div style="font-size: 1.8rem;">🏆</div>
-                <div>
-                    <h3 style="margin: 0 0 4px 0;" id="a1-title">A GAMF Karért Oklevél</h3>
-                    <div style="font-size: 0.85rem; color: var(--text-muted); font-family: monospace; margin-bottom: 8px;" id="a1-sub">Neumann János Egyetem • GAMF Műszaki és Informatikai Kar</div>
-                    <p style="margin: 0; color: var(--text-muted); font-size: 0.95rem;" id="a1-desc">Elismerés a World Solar Challenge 2025 versenyen végzett mesterséges intelligencia alapú fejlesztési feladatok sikeres elvégzéséért.</p>
-                </div>
+                <article class="lab-card">
+                    <h3 data-i18n="nn-title"></h3>
+                    <p data-i18n="nn-desc"></p>
+                    <canvas id="nn-canvas" width="400" height="250" aria-label="Neural network visualisation"></canvas>
+                    <div class="lab-controls">
+                        <button type="button" class="button small" id="nn-add-layer" data-i18n="nn-add"></button>
+                        <button type="button" class="button small" id="nn-reset" data-i18n="nn-reset"></button>
+                        <button type="button" class="button small" id="nn-weights" data-i18n="nn-weights"></button>
+                    </div>
+                    <p class="lab-stats" id="nn-stats"></p>
+                </article>
+
+                <article class="lab-card">
+                    <h3 data-i18n="tsp-title"></h3>
+                    <p data-i18n="tsp-desc"></p>
+                    <canvas id="tsp-canvas" width="400" height="250" aria-label="Genetic route canvas"></canvas>
+                    <div class="lab-controls">
+                        <button type="button" class="button small" id="tsp-start" data-i18n="tsp-start"></button>
+                        <button type="button" class="button small" id="tsp-clear" data-i18n="clear"></button>
+                    </div>
+                    <div class="lab-controls">
+                        <span class="lab-label" data-i18n="speed"></span>
+                        <button type="button" class="button small speed-button" data-speed="150" data-i18n="slow"></button>
+                        <button type="button" class="button small speed-button" data-speed="40" data-i18n="medium"></button>
+                        <button type="button" class="button small speed-button" data-speed="5" data-i18n="fast"></button>
+                    </div>
+                    <p class="lab-stats" id="tsp-stats" aria-live="polite"></p>
+                </article>
+
             </div>
         </section>
 
-        <section id="elerhetoseg">
-            <h2 id="sec-contact-title">Kapcsolat</h2>
-            <div class="contact-info">
-                <p id="contact-text">Keress bizalommal az alábbi elérhetőségeken vagy küldj közvetlen üzenetet:</p>
-                <p>📧 E-mail: <a href="mailto:szszakos@outlook.hu">szszakos@outlook.hu</a></p>
-                <p>💻 GitHub: <a href="https://github.com/AkosSzSz" target="_blank">AkosSzSZ</a></p>
-                
-                <form class="contact-form" action="https://formspree.io/f/moeekzaw" method="POST" style="margin-top: 25px;">
-                    <div style="margin-bottom: 15px;">
-                        <label for="name" id="form-name-label" style="display: block; margin-bottom: 5px; font-size: 0.9rem; color: var(--text-muted);">Név:</label>
-                        <input type="text" id="name" name="name" required style="width: 100%; padding: 10px; background: var(--sidebar-bg); border: 1px solid var(--border); color: var(--text-main); border-radius: 4px;">
+        <section class="container" id="awards">
+            <h2 data-i18n="awards-h"></h2>
+
+            <article class="award-card">
+                <div class="award-content">
+                    <div class="award-badge">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="8" r="7"></circle>
+                            <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+                        </svg>
+                        <span data-i18n="award-badge-text">Kiemelt elismerés</span>
                     </div>
-                    <div style="margin-bottom: 15px;">
-                        <label for="email" id="form-email-label" style="display: block; margin-bottom: 5px; font-size: 0.9rem; color: var(--text-muted);">E-mail cím:</label>
-                        <input type="email" id="email" name="email" required style="width: 100%; padding: 10px; background: var(--sidebar-bg); border: 1px solid var(--border); color: var(--text-main); border-radius: 4px;">
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        <label for="message" id="form-msg-label" style="display: block; margin-bottom: 5px; font-size: 0.9rem; color: var(--text-muted);">Üzenet:</label>
-                        <textarea id="message" name="message" rows="4" required style="width: 100%; padding: 10px; background: var(--sidebar-bg); border: 1px solid var(--border); color: var(--text-main); border-radius: 4px; resize: vertical;"></textarea>
-                    </div>
-                    <button type="submit" class="ai-btn" id="form-submit-btn" style="padding: 10px 20px; font-size: 0.9rem;">Küldés</button>
-                </form>
-            </div>
+                    
+                    <h3 data-i18n="award-title"></h3>
+                    <p class="project-note" style="margin-top: 4px;" data-i18n="award-org"></p>
+                    <p data-i18n="award-desc" style="margin-top: 12px;"></p>
+                </div>
+
+                <div class="award-image-wrapper">
+                    <img src="award.jpg" alt="A GAMF Karért oklevél" class="award-image" width="160" height="200" loading="lazy">
+                </div>
+            </article>
         </section>
+
+        <section class="container" id="contact">
+            <h2 data-i18n="contact-h"></h2>
+            <p class="section-intro" data-i18n="contact-desc"></p>
+
+            <form action="https://formspree.io/f/moeekzaw" method="POST">
+                <label for="name" data-i18n="form-name"></label>
+                <input type="text" id="name" name="name" autocomplete="name" required>
+
+                <label for="email" data-i18n="form-email"></label>
+                <input type="email" id="email" name="email" autocomplete="email" required>
+
+                <label for="message" data-i18n="form-message"></label>
+                <textarea id="message" name="message" rows="5" required></textarea>
+
+                <button type="submit" class="button primary" data-i18n="form-send"></button>
+            </form>
+        </section>
+
     </main>
+
+    <footer class="page-end">
+        <div class="container">
+            <span data-i18n="name"></span>
+            <a href="mailto:szszakos@outlook.hu">szszakos@outlook.hu</a>
+        </div>
+    </footer>
 
     <script>
         const t = {
             hu: {
-                "btn-menu": "☰ Menü",
+                "name": "Szabó-Szikszay Ákos",
                 "nav-about": "Rólam",
-                "nav-gallery": "Projektek",
-                "nav-ailab": "MI Labor",
-                "nav-awards": "Eredmények",
+                "nav-projects": "Projektek",
+                "nav-lab": "Labor",
+                "nav-awards": "Elismerés",
                 "nav-contact": "Kapcsolat",
-                
-                "hero-title": "Szia, Szabó-Szikszay Ákos vagyok!",
-                "hero-subtitle": "Mesterséges Intelligencia & Adattudomány",
-                "hero-desc": "Legfőképpen Pythonban tanultam és mélyedtem el az adattudomány és a mesterséges intelligencia világában. Szenvedélyem a prediktív modellek építése és az adatok mögött rejlő minták feltárása.",
-                
-                "sec-skills-title": "Készségek",
-                "sec-gallery-title": "Projektek",
-                "sec-ailab-title": "MI Kísérleti Labor",
-                "sec-awards-title": "Eredmények",
-                "sec-contact-title": "Kapcsolat",
 
-                "p1-title": "Időjárás-Korrekciós Rendszer",
-                "p1-desc": "Adatelemző modul, amely történeti előrejelzéseket hasonlít össze valós idejű mérési adatokkal, pontosítva a jövőbeli becsléseket.",
-                "p1-badge": "NJE GAMF Oklevéllel elismert projekt",
-                "p1-li1": "JSON adatstruktúrák parsingja",
-                "p1-li2": "Dinamikus hibaszámítás időbélyegekre",
-                
-                "p2-title": "Snake Játék & Oktatás",
-                "p2-desc": "Egyedi logikájú Snake játék, amely oktatási segédanyagként szolgált programozás-módszertani bemutatókon, szemléltetve a tiszta kód elveit.",
-                "p2-li1": "Rács alapú mozgás és ütközésdetektálás",
-                "p2-li2": "Dinamikus pontrendszer és állapotkezelés",
+                "role": "Adattudomány és mesterséges intelligencia",
+                "summary": "Pythonban foglalkozom adattudománnyal és mesterséges intelligenciával. Projektjeim között szerepel egy időjárás-előrejelzéseket mérési adatok alapján korrigáló rendszer, egy Pygame-alapú Snake játék, valamint a K-means klaszterezést, neurális hálózatokat és genetikus algoritmusokat bemutató interaktív programok.",
+                "btn-email": "E-mail küldése",
+                "skills-h": "Programozási nyelvek",
 
-                "ai1-title": "K-Means Klaszterező",
-                "badge-ml": "ML",
-                "ai1-desc": "Kattints az alábbi sötét mezőbe tetszőleges pontok elhelyezéséhez, majd indítsd el a klaszterezést!",
-                "ai1-btn1": "Klaszterezés",
-                "ai1-btn2": "Törlés",
+                "projects-h": "Projektek",
+                "p1-title": "Időjárás-korrekciós rendszer",
+                "p1-desc": "Parancssoros Python program, amely a korábbi időjárás-előrejelzéseket összeveti a ténylegesen mért adatokkal, és az eltérés alapján korrigálja a felhasználó által megadott értéket.",
+                "p1-li1": "Előrejelzési és mérési JSON-fájlok beolvasása a standard könyvtárral (json, os, datetime)",
+                "p1-li2": "Az óránkénti előrejelzés és az aktuális mérés különbségének számítása számszerű paraméterekre (pl. hőmérséklet, páratartalom, csapadék)",
+                "p1-li3": "Napkelte és napnyugta korrigálása időeltolással; szöveges értékeknél (pl. időjárási állapot) a mért érték átvétele",
+                "p1-note": "A NJE GAMF oklevelével elismert projekt.",
+                "p2-title": "Snake játék és oktatási segédanyag",
+                "p2-desc": "Pygame-mel készült Snake játék saját kiegészítésekkel, amelyet programozás-módszertani bemutatókon használtam a tiszta kód elveinek szemléltetésére.",
+                "p2-li1": "Rácsalapú mozgás, ütközés a falakkal és a kígyó saját testével, a visszafordulás tiltása",
+                "p2-li2": "Minden elfogyasztott étel után gyorsul a játék; 20% eséllyel időzített bónusz étel jelenik meg (+3 hossz)",
+                "p2-li3": "A legjobb pontszám fájlba mentődik (highscore.txt); vesztés után újraindítás vagy kilépés",
 
-                "ai2-title": "Neurális Hálózat építő",
-                "badge-dl": "DL",
-                "ai2-desc": "Mély neurális hálózatok adatáramlásának (Forward Propagation) vizuális szimulációja valós időben.",
-                "ai2-btn1": "Réteg +",
-                "ai2-btn2": "Alaphelyzet",
+                "lab-h": "Kísérletező labor",
+                "lab-intro": "Három kis program, amelyekkel az algoritmusok működését szemléltetem. Közvetlenül a böngészőben kipróbálhatók.",
+                "km-title": "K-means klaszterezés",
+                "km-desc": "Kattintson a mezőbe pontok elhelyezéséhez. A kezdő centroidokat k-means++ módszerrel választja ki az algoritmus; léptetheti, vagy futtathatja konvergenciáig. A K gombokkal a klaszterek száma állítható.",
+                "km-step": "Következő lépés",
+                "km-run": "Futtatás konvergenciáig",
+                "km-done": " – konvergált",
+                "clear": "Törlés",
+                "nn-title": "Neurális hálózat",
+                "nn-desc": "Valódi előrecsatolt számítás véletlen súlyokkal: a bemenetek folyamatosan változnak, és minden neuron a súlyozott összeg szigmoidját számolja. A neuron fényessége az aktivációt, az élek színe a súly előjelét mutatja.",
+                "nn-add": "Réteg hozzáadása",
+                "nn-reset": "Alaphelyzet",
+                "nn-weights": "Új súlyok",
+                "tsp-title": "Genetikus útvonaloptimalizáló",
+                "tsp-desc": "Helyezzen el városokat a mezőben. A genetikus algoritmus populációval, versenyszerűen kiválasztott szülőkkel, sorrendkeresztezéssel (OX) és mutációval keresi a legrövidebb körutat.",
+                "tsp-start": "Indítás",
+                "speed": "Sebesség:",
+                "slow": "Lassú",
+                "medium": "Közepes",
+                "fast": "Gyors",
+                "km-stats": "Pontok: {points}, klaszterek (K): {clusters}, iteráció: {iter}",
+                "nn-stats": "Bemenet: {input}, rejtett rétegek: {hidden}, kimenet: {output} (értékek: {values})",
+                "tsp-stats": "Városok: {cities}, legjobb távolság: {distance}, generáció: {generation}",
 
-                "ai3-title": "Genetikus Útvonaloptimalizáló",
-                "badge-evo": "Evolúciós",
-                "ai3-desc": "Helyezz el kattintással városokat a mezőben, az evolúciós algoritmus pedig megkeresi a legrövidebb körutat.",
-                "ai3-btn1": "Evolúció indítása",
-                "ai3-btn2": "Törlés",
-                "ai3-slow": "Lassú",
-                "ai3-mid": "Közepes",
-                "ai3-fast": "Gyors",
-                "ai3-speed-label": "Sebesség:",
+                "awards-h": "Elismerés",
+                "award-badge-text": "Kiemelt elismerés",
+                "award-title": "A GAMF Karért oklevél",
+                "award-org": "Neumann János Egyetem, GAMF Műszaki és Informatikai Kar",
+                "award-desc": "Elismerés a World Solar Challenge 2025 versenyen végzett, mesterséges intelligencián alapuló fejlesztési feladatokért.",
 
-                "a1-title": "A GAMF Karért Oklevél",
-                "a1-sub": "Neumann János Egyetem • GAMF Műszaki és Informatikai Kar",
-                "a1-desc": "Elismerés a World Solar Challenge 2025 versenyen végzett mesterséges intelligencia alapú fejlesztési feladatok sikeres elvégzéséért.",
-                
-                "contact-text": "Keress bizalommal az alábbi elérhetőségeken vagy küldj közvetlen üzenetet:",
-                "form-name-label": "Név:",
-                "form-email-label": "E-mail cím:",
-                "form-msg-label": "Üzenet:",
-                "form-submit-btn": "Küldés",
-
-                "kmeans-stats": "Pontok száma: {p} | Klaszterek száma: {c}",
-                "nn-stats": "Bemenet: {i} | Rejtett rétegek száma: {h} | Kimenet: {o}",
-                "tsp-stats": "Városok: {c} | Legjobb távolság: {d} | Generáció: {g}"
+                "contact-h": "Kapcsolat",
+                "contact-desc": "Írjon bátran e-mailben, vagy használja az alábbi űrlapot.",
+                "form-name": "Név",
+                "form-email": "E-mail cím",
+                "form-message": "Üzenet",
+                "form-send": "Küldés"
             },
+
             en: {
-                "btn-menu": "☰ Menu",
+                "name": "Ákos Szabó-Szikszay",
                 "nav-about": "About",
-                "nav-gallery": "Projects",
-                "nav-ailab": "AI Lab",
-                "nav-awards": "Awards",
+                "nav-projects": "Projects",
+                "nav-lab": "Lab",
+                "nav-awards": "Recognition",
                 "nav-contact": "Contact",
-                
-                "hero-title": "Hi, I'm Ákos Szabó-Szikszay!",
-                "hero-subtitle": "Artificial Intelligence & Data Science",
-                "hero-desc": "I focused my studies primarily on Python, diving deep into data science and artificial intelligence. I'm passionate about building predictive models and uncovering the patterns hidden behind data.",
-                
-                "sec-skills-title": "Technical Skills",
-                "sec-gallery-title": "Project Gallery",
-                "sec-ailab-title": "AI Experimental Lab",
-                "sec-awards-title": "Awards",
-                "sec-contact-title": "Contact",
 
-                "p1-title": "Predictive Weather Correction",
-                "p1-desc": "Data analysis module comparing historical forecasts with real-time measurements to refine future predictions.",
-                "p1-badge": "Project Awarded with NJE GAMF Diploma of Merit",
-                "p1-li1": "Parsing JSON data structures",
-                "p1-li2": "Dynamic error calculation for timestamps",
-                
-                "p2-title": "Snake Game & Education",
-                "p2-desc": "A custom Snake game used as a demonstration tool during programming workshops to showcase clean code principles to students.",
-                "p2-li1": "Grid-based movement and collision detection",
-                "p2-li2": "Dynamic scoring system and state management",
+                "role": "Data Science and Artificial Intelligence",
+               "summary": "I work with data science and artificial intelligence using Python. My projects include a system that corrects weather forecasts based on measured data, a Snake game built with Pygame, and interactive programs demonstrating K-means clustering, neural networks and genetic algorithms.",
+                "btn-email": "Send an email",
+                "skills-h": "Programming languages",
 
-                "ai1-title": "K-Means Clustering",
-                "badge-ml": "ML",
-                "ai1-desc": "Click inside the dark area below to place arbitrary points, then start the clustering!",
-                "ai1-btn1": "Cluster",
-                "ai1-btn2": "Clear",
+                "projects-h": "Projects",
+                "p1-title": "Weather correction system",
+                "p1-desc": "A command-line Python program that compares earlier weather forecasts with measured data and uses the difference to correct a value entered by the user.",
+                "p1-li1": "Reads forecast and observation JSON files with the standard library (json, os, datetime)",
+                "p1-li2": "Calculates the difference between the hourly forecast and current conditions for numeric parameters (e.g. temperature, humidity, precipitation)",
+                "p1-li3": "Sunrise and sunset are corrected with a time shift; for text values such as conditions, the observed value is used",
+                "p1-note": "Project recognised with a diploma from NJE GAMF.",
+                "p2-title": "Snake game and teaching material",
+                "p2-desc": "A Snake game built with pygame and a few extra features of my own, used in programming workshops to show clean code principles.",
+                "p2-li1": "Grid-based movement, collisions with the walls and the snake's own body, no reversing into itself",
+                "p2-li2": "The game speeds up with every food eaten; a timed bonus food appears with a 20% chance (+3 length)",
+                "p2-li3": "The high score is saved to a file (highscore.txt); after losing you can restart or quit",
 
-                "ai2-title": "Neural Network Builder",
-                "badge-dl": "DL",
-                "ai2-desc": "Visual real-time simulation of deep neural network data flow (Forward Propagation).",
-                "ai2-btn1": "Layer +",
-                "ai2-btn2": "Reset",
+                "lab-h": "Experiment lab",
+                "lab-intro": "Three small programs that illustrate how these algorithms work. They run directly in the browser.",
+                "km-title": "K-means clustering",
+                "km-desc": "Click in the field to place points. The starting centroids are chosen with k-means++; step through the algorithm or run it until it converges. The K buttons change the number of clusters.",
+                "km-step": "Next step",
+                "km-run": "Run to convergence",
+                "km-done": " – converged",
+                "clear": "Clear",
+                "nn-title": "Neural network",
+                "nn-desc": "A real forward pass with random weights: the inputs keep changing and every neuron computes the sigmoid of its weighted sum. Neuron brightness shows the activation, edge colour shows the sign of the weight.",
+                "nn-add": "Add layer",
+                "nn-reset": "Reset",
+                "nn-weights": "New weights",
+                "tsp-title": "Genetic route optimiser",
+                "tsp-desc": "Place cities in the field. The genetic algorithm uses a population, tournament selection, order crossover (OX) and mutation to search for the shortest tour.",
+                "tsp-start": "Start",
+                "speed": "Speed:",
+                "slow": "Slow",
+                "medium": "Medium",
+                "fast": "Fast",
+                "km-stats": "Points: {points}, clusters (K): {clusters}, iteration: {iter}",
+                "nn-stats": "Input: {input}, hidden layers: {hidden}, output: {output} (values: {values})",
+                "tsp-stats": "Cities: {cities}, best distance: {distance}, generation: {generation}",
 
-                "ai3-title": "Genetic Route Optimizer",
-                "badge-evo": "Evolutionary",
-                "ai3-desc": "Click to place cities in the field, and the evolutionary algorithm will find the shortest tour.",
-                "ai3-btn1": "Start Evolution",
-                "ai3-btn2": "Clear",
-                "ai3-slow": "Slow",
-                "ai3-mid": "Medium",
-                "ai3-fast": "Fast",
-                "ai3-speed-label": "Speed:",
+                "awards-h": "Recognition",
+                "award-badge-text": "Honorable Mention",
+                "award-title": "Diploma of Merit for the GAMF Faculty",
+                "award-org": "John von Neumann University, GAMF Faculty of Engineering and Computer Science",
+                "award-desc": "Awarded for AI-based development work carried out for the World Solar Challenge 2025 competition.",
 
-                "a1-title": "GAMF Faculty Diploma of Merit",
-                "a1-sub": "John von Neumann University • GAMF Faculty of Engineering and Computer Science",
-                "a1-desc": "Awarded for successful AI-based software development contributions to the World Solar Challenge 2025 competition.",
-                
-                "contact-text": "Feel free to contact me through the following channels or send a direct message:",
-                "form-name-label": "Name:",
-                "form-email-label": "Email address:",
-                "form-msg-label": "Message:",
-                "form-submit-btn": "Send",
-
-                "kmeans-stats": "Number of points: {p} | Number of clusters: {c}",
-                "nn-stats": "Input: {i} | Hidden layers: {h} | Output: {o}",
-                "tsp-stats": "Cities: {c} | Best distance: {d} | Generation: {g}"
+                "contact-h": "Contact",
+                "contact-desc": "Feel free to email me or use the form below.",
+                "form-name": "Name",
+                "form-email": "Email address",
+                "form-message": "Message",
+                "form-send": "Send"
             },
+
             de: {
-                "btn-menu": "☰ Menü",
+                "name": "Ákos Szabó-Szikszay",
                 "nav-about": "Über mich",
-                "nav-gallery": "Galerie",
-                "nav-ailab": "KI-Labor",
-                "nav-awards": "Erfolge",
+                "nav-projects": "Projekte",
+                "nav-lab": "Labor",
+                "nav-awards": "Auszeichnung",
                 "nav-contact": "Kontakt",
-                
-                "hero-title": "Hallo, ich bin Ákos Szabó-Szikszay!",
-                "hero-subtitle": "Künstliche Intelligenz & Datenwissenschaft",
-                "hero-desc": "Ich habe mich hauptsächlich auf Python konzentriert und mein Wissen in den Bereichen Datenwissenschaft und künstliche Intelligenz vertieft. Es macht mir Spaß, prädiktive Modelle zu entwickeln und Muster in Daten zu entdecken.",
-                
-                "sec-skills-title": "Fähigkeiten",
-                "sec-gallery-title": "Projektgalerie",
-                "sec-ailab-title": "KI-Experimentallabor",
-                "sec-awards-title": "Erfolge",
-                "sec-contact-title": "Kontakt",
 
+                "role": "Datenwissenschaft und künstliche Intelligenz",
+                "summary": "Ich beschäftige mich mit Data Science und künstlicher Intelligenz unter Verwendung von Python. Zu meinen Projekten gehören ein System zur Korrektur von Wettervorhersagen anhand gemessener Daten, ein mit Pygame entwickeltes Snake-Spiel sowie interaktive Programme zur Veranschaulichung von K-Means-Clustering, neuronalen Netzen und genetischen Algorithmen.",
+                "btn-email": "E-Mail senden",
+                "skills-h": "Programmiersprachen",
+
+                "projects-h": "Projekte",
                 "p1-title": "Wetterkorrektursystem",
-                "p1-desc": "Datenanalysemodul, das historische Vorhersagen mit Echtzeit-Messdaten vergleicht, um zukünftige Schätzungen zu präzisieren.",
-                "p1-badge": "Mit dem NJE GAMF Verdienstdiplom ausgezeichnetes Projekt",
-                "p1-li1": "Parsing von JSON-Datenstrukturen",
-                "p1-li2": "Dynamische Fehlerberechnung für Zeitstempel",
-                
-                "p2-title": "Snake Spiel & Bildung",
-                "p2-desc": "Ein Snake-Spiel, das als Demonstrationswerkzeug in Programmierworkshops diente, um Schülern Clean-Code-Prinzipien zu vermitteln.",
-                "p2-li1": "Gitterbasierte Bewegung und Kollisionserkennung",
-                "p2-li2": "Dynamisches Punktesystem und Zustandsverwaltung",
+                "p1-desc": "Ein Python-Programm für die Kommandozeile, das frühere Wettervorhersagen mit gemessenen Daten vergleicht und mit der Abweichung einen vom Nutzer eingegebenen Wert korrigiert.",
+                "p1-li1": "Einlesen von Vorhersage- und Messdaten im JSON-Format mit der Standardbibliothek (json, os, datetime)",
+                "p1-li2": "Berechnung der Differenz zwischen stündlicher Vorhersage und aktuellen Bedingungen für numerische Werte (z. B. Temperatur, Luftfeuchtigkeit, Niederschlag)",
+                "p1-li3": "Sonnenaufgang und -untergang werden per Zeitverschiebung korrigiert; bei Textwerten wie den Wetterbedingungen wird der gemessene Wert übernommen",
+                "p1-note": "Mit einem Diplom der NJE GAMF ausgezeichnetes Projekt.",
+                "p2-title": "Snake-Spiel und Lehrmaterial",
+                "p2-desc": "Ein mit pygame entwickeltes Snake-Spiel mit eigenen Erweiterungen, das in Programmier-Workshops zur Veranschaulichung von Clean-Code-Prinzipien diente.",
+                "p2-li1": "Gitterbasierte Bewegung, Kollision mit den Wänden und dem eigenen Körper, kein Umkehren in die Gegenrichtung",
+                "p2-li2": "Das Spiel wird mit jedem Futter schneller; mit 20 % Wahrscheinlichkeit erscheint ein zeitlich begrenztes Bonusfutter (+3 Länge)",
+                "p2-li3": "Der Highscore wird in einer Datei gespeichert (highscore.txt); nach dem Verlieren Neustart oder Beenden",
 
-                "ai1-title": "K-Means Clustering",
-                "badge-ml": "ML",
-                "ai1-desc": "Klicken Sie in den dunklen Bereich unten, um Punkte zu setzen, und starten Sie das Clustering!",
-                "ai1-btn1": "Clustern",
-                "ai1-btn2": "Löschen",
+                "lab-h": "Experimentierlabor",
+                "lab-intro": "Drei kleine Programme, die zeigen, wie diese Algorithmen funktionieren. Sie laufen direkt im Browser.",
+                "km-title": "K-Means-Clustering",
+                "km-desc": "Klicken Sie in das Feld, um Punkte zu setzen. Die Start-Zentroide werden mit k-means++ gewählt; gehen Sie schrittweise vor oder lassen Sie den Algorithmus bis zur Konvergenz laufen. Mit den K-Tasten ändern Sie die Clusteranzahl.",
+                "km-step": "Nächster Schritt",
+                "km-run": "Bis Konvergenz ausführen",
+                "km-done": " – konvergiert",
+                "clear": "Löschen",
+                "nn-title": "Neuronales Netz",
+                "nn-desc": "Ein echter Forward-Pass mit zufälligen Gewichten: Die Eingaben ändern sich laufend, und jedes Neuron berechnet die Sigmoid-Funktion seiner gewichteten Summe. Die Helligkeit zeigt die Aktivierung, die Kantenfarbe das Vorzeichen des Gewichts.",
+                "nn-add": "Schicht hinzufügen",
+                "nn-reset": "Zurücksetzen",
+                "nn-weights": "Neue Gewichte",
+                "tsp-title": "Genetischer Routenoptimierer",
+                "tsp-desc": "Setzen Sie Städte in das Feld. Der genetische Algorithmus nutzt eine Population, Turnierselektion, Order-Crossover (OX) und Mutation, um die kürzeste Rundreise zu finden.",
+                "tsp-start": "Starten",
+                "speed": "Geschwindigkeit:",
+                "slow": "Langsam",
+                "medium": "Mittel",
+                "fast": "Schnell",
+                "km-stats": "Punkte: {points}, Cluster (K): {clusters}, Iteration: {iter}",
+                "nn-stats": "Eingabe: {input}, versteckte Schichten: {hidden}, Ausgabe: {output} (Werte: {values})",
+                "tsp-stats": "Städte: {cities}, beste Distanz: {distance}, Generation: {generation}",
 
-                "ai2-title": "Neuronales Netzwerk-Builder",
-                "badge-dl": "DL",
-                "ai2-desc": "Visuelle Echtzeitsimulation des Datenflusses tiefer neuronaler Netze (Forward Propagation).",
-                "ai2-btn1": "Schicht +",
-                "ai2-btn2": "Zurücksetzen",
+                "awards-h": "Auszeichnung",
+                "award-badge-text": "Auszeichnung",
+                "award-title": "Verdienstdiplom für die GAMF-Fakultät",
+                "award-org": "John-von-Neumann-Universität, GAMF-Fakultät für Ingenieurwesen und Informatik",
+                "award-desc": "Auszeichnung für KI-basierte Entwicklungsarbeiten im Rahmen der World Solar Challenge 2025.",
 
-                "ai3-title": "Genetischer Route-Optimizer",
-                "badge-evo": "Evolutionär",
-                "ai3-desc": "Plazieren Sie Städte durch Klicken, und der Evolutionsalgorithmus findet die kürzeste Rundreise.",
-                "ai3-btn1": "Evolution starten",
-                "ai3-btn2": "Löschen",
-                "ai3-slow": "Langsam",
-                "ai3-mid": "Mittel",
-                "ai3-fast": "Schnell",
-                "ai3-speed-label": "Geschwindigkeit:",
-
-                "a1-title": "Verdienstdiplom der GAMF-Fakultät",
-                "a1-sub": "John von Neumann Universität • GAMF-Fakultät für Ingenieurwesen und Informatik",
-                "a1-desc": "Auszeichnung für erfolgreiche KI-basierte Entwicklungsarbeiten im Rahmen des World Solar Challenge 2025 Wettbewerbs.",
-                
-                "contact-text": "Kontaktieren Sie mich gerne über die folgenden Kanäle oder senden Sie eine direkte Nachricht:",
-                "form-name-label": "Name:",
-                "form-email-label": "E-Mail-Adresse:",
-                "form-msg-label": "Nachricht:",
-                "form-submit-btn": "Senden",
-
-                "kmeans-stats": "Anzahl der Punkte: {p} | Anzahl der Cluster: {c}",
-                "nn-stats": "Eingabe: {i} | Versteckte Schichten: {h} | Ausgabe: {o}",
-                "tsp-stats": "Städte: {c} | Beste Distanz: {d} | Generation: {g}"
+                "contact-h": "Kontakt",
+                "contact-desc": "Schreiben Sie mir gern eine E-Mail oder nutzen Sie das Formular.",
+                "form-name": "Name",
+                "form-email": "E-Mail-Adresse",
+                "form-message": "Nachricht",
+                "form-send": "Senden"
             }
         };
 
-        function setLanguage(lang) {
-            for (const k in t[lang]) {
-                const el = document.getElementById(k);
-                if (el && el.tagName !== 'IMG') el.innerHTML = t[lang][k];
-            }
-            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-            const targetBtn = document.getElementById(`lang-${lang}`);
-            if (targetBtn) targetBtn.classList.add('active');
-            document.documentElement.lang = lang;
+        let lang = "hu";
+
+        function statText(key, vars) {
+            let s = t[lang][key];
+            for (const k in vars) s = s.replace("{" + k + "}", vars[k]);
+            return s;
+        }
+
+        function setLanguage(l) {
+            lang = l;
+            document.documentElement.lang = l;
+
+            document.querySelectorAll("[data-i18n]").forEach(el => {
+                el.textContent = t[l][el.dataset.i18n];
+            });
+            document.querySelectorAll(".lang-switch button").forEach(b => {
+                b.setAttribute("aria-pressed", b.dataset.lang === l);
+            });
+
+            try { localStorage.setItem("lang", l); } catch (e) {}
+
+            refreshKMStats();
+            refreshNNStats();
+            drawTSP();
+        }
+
+        function setTheme(theme) {
+            const root = document.documentElement;
+            if (theme === "dark") root.setAttribute("data-theme", "dark");
+            else root.removeAttribute("data-theme");
+
+            try { localStorage.setItem("theme", theme); } catch (e) {}
 
             drawKMeans();
             drawNN();
             drawTSP();
         }
 
-        function toggleSidebar() { document.getElementById("mySidebar").classList.toggle("active"); }
-
         function toggleTheme() {
-            const current = document.documentElement.getAttribute("data-theme");
-            const newTheme = current === "light" ? "dark" : "light";
-            setTheme(newTheme);
+            const dark = document.documentElement.getAttribute("data-theme") === "dark";
+            setTheme(dark ? "light" : "dark");
         }
 
-        function setTheme(theme) {
-            if (theme === "light") document.documentElement.setAttribute("data-theme", "light");
-            else document.documentElement.removeAttribute("data-theme");
-            localStorage.setItem("user-theme", theme);
+        const cssVar = name => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+        const dist = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
+
+        function canvasXY(canvas, e) {
+            const r = canvas.getBoundingClientRect();
+            return {
+                x: (e.clientX - r.left) * canvas.width / r.width,
+                y: (e.clientY - r.top) * canvas.height / r.height
+            };
         }
 
-        // --- K-MEANS LOGIKA ---
-        const kmCanvas = document.getElementById('kmeansCanvas');
-        const kmCtx = kmCanvas ? kmCanvas.getContext('2d') : null;
+        function circle(ctx, x, y, radius, color) {
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, Math.PI * 2);
+            ctx.fillStyle = color;
+            ctx.fill();
+        }
+
+
+        const kmCanvas = document.getElementById("kmeans-canvas");
+        const kmCtx = kmCanvas.getContext("2d");
+        const kmColors = ["#d64545", "#2f9e6b", "#3b6fe0", "#e0a526", "#8e5bd6"];
+        let clusters = 3;
         let kmPoints = [];
         let kmCentroids = [];
-        const kmColors = ['#ff4a4a', '#4ade80', '#007BFF'];
+        let kmIteration = 0;
+        let kmConverged = false;
+        let kmTimer = null;
 
-        if (kmCanvas) {
-            kmCanvas.addEventListener('click', (e) => {
-                const rect = kmCanvas.getBoundingClientRect();
-                const scaleX = kmCanvas.width / rect.width;
-                const scaleY = kmCanvas.height / rect.height;
-                const x = (e.clientX - rect.left) * scaleX;
-                const y = (e.clientY - rect.top) * scaleY;
-                kmPoints.push({ x, y, cluster: -1 });
-                drawKMeans();
-            });
+        function drawCross(c, color) {
+            kmCtx.strokeStyle = color;
+            kmCtx.lineWidth = 3;
+            kmCtx.beginPath();
+            kmCtx.moveTo(c.x - 8, c.y - 8);
+            kmCtx.lineTo(c.x + 8, c.y + 8);
+            kmCtx.moveTo(c.x + 8, c.y - 8);
+            kmCtx.lineTo(c.x - 8, c.y + 8);
+            kmCtx.stroke();
         }
 
         function drawKMeans() {
-            if (!kmCtx) return;
             kmCtx.clearRect(0, 0, kmCanvas.width, kmCanvas.height);
-            
-            const lang = document.documentElement.lang || 'hu';
-            document.getElementById('kmeansStats').innerText = t[lang]["kmeans-stats"]
-                .replace('{p}', kmPoints.length)
-                .replace('{c}', 3);
-            
-            kmPoints.forEach(p => {
-                kmCtx.beginPath(); kmCtx.arc(p.x, p.y, 5, 0, Math.PI * 2);
-                kmCtx.fillStyle = p.cluster === -1 ? '#a0a0a0' : kmColors[p.cluster]; kmCtx.fill();
-            });
 
-            kmCentroids.forEach((c, idx) => {
-                kmCtx.strokeStyle = kmColors[idx]; kmCtx.lineWidth = 3;
-                kmCtx.beginPath();
-                kmCtx.moveTo(c.x - 8, c.y - 8); kmCtx.lineTo(c.x + 8, c.y + 8);
-                kmCtx.moveTo(c.x + 8, c.y - 8); kmCtx.lineTo(c.x - 8, c.y + 8);
-                kmCtx.stroke();
-            });
+            for (const p of kmPoints) {
+                const color = p.cluster < 0 ? cssVar("--text-muted") : kmColors[p.cluster];
+                circle(kmCtx, p.x, p.y, 5, color);
+            }
+            kmCentroids.forEach((c, i) => drawCross(c, kmColors[i]));
+        }
+
+        function refreshKMStats() {
+            let text = statText("km-stats", { points: kmPoints.length, clusters: clusters, iter: kmIteration });
+            if (kmConverged) text += t[lang]["km-done"];
+            document.getElementById("kmeans-stats").textContent = text;
+        }
+
+        function pickCentroids() {
+            const first = kmPoints[Math.floor(Math.random() * kmPoints.length)];
+            kmCentroids = [{ x: first.x, y: first.y }];
+
+            while (kmCentroids.length < clusters) {
+                const weights = kmPoints.map(p => Math.min(...kmCentroids.map(c => dist(p, c))) ** 2);
+                let r = Math.random() * weights.reduce((a, b) => a + b, 0);
+                let chosen = kmPoints[kmPoints.length - 1];
+                for (let i = 0; i < kmPoints.length; i++) {
+                    r -= weights[i];
+                    if (r <= 0) { chosen = kmPoints[i]; break; }
+                }
+                kmCentroids.push({ x: chosen.x, y: chosen.y });
+            }
+        }
+
+        function nearestCentroid(p) {
+            let best = 0;
+            for (let i = 1; i < kmCentroids.length; i++) {
+                if (dist(p, kmCentroids[i]) < dist(p, kmCentroids[best])) best = i;
+            }
+            return best;
+        }
+
+        function averagePoint(group) {
+            const sum = group.reduce((s, p) => ({ x: s.x + p.x, y: s.y + p.y }), { x: 0, y: 0 });
+            return { x: sum.x / group.length, y: sum.y / group.length };
         }
 
         function runKMeans() {
-            if (kmPoints.length < 3) return;
-            if (kmCentroids.length === 0) {
-                for (let i = 0; i < 3; i++) {
-                    const rp = kmPoints[Math.floor(Math.random() * kmPoints.length)];
-                    kmCentroids.push({ x: rp.x, y: rp.y });
-                }
-            }
+            if (kmPoints.length < clusters || kmConverged) return;
+            if (kmCentroids.length === 0) pickCentroids();
+
+            let changed = false;
             kmPoints.forEach(p => {
-                let minDist = Infinity; let closest = 0;
-                kmCentroids.forEach((c, idx) => {
-                    let d = Math.hypot(p.x - c.x, p.y - c.y);
-                    if (d < minDist) { minDist = d; closest = idx; }
-                });
-                p.cluster = closest;
-            });
-            for (let i = 0; i < 3; i++) {
-                let clusterPoints = kmPoints.filter(p => p.cluster === i);
-                if (clusterPoints.length > 0) {
-                    let sumX = clusterPoints.reduce((sum, p) => sum + p.x, 0);
-                    let sumY = clusterPoints.reduce((sum, p) => sum + p.y, 0);
-                    kmCentroids[i] = { x: sumX / clusterPoints.length, y: sumY / clusterPoints.length };
+                const c = nearestCentroid(p);
+                if (c !== p.cluster) {
+                    p.cluster = c;
+                    changed = true;
                 }
+            });
+
+            for (let i = 0; i < clusters; i++) {
+                const group = kmPoints.filter(p => p.cluster === i);
+                if (group.length) kmCentroids[i] = averagePoint(group);
             }
+
+            kmIteration++;
+            if (!changed) kmConverged = true;
             drawKMeans();
+            refreshKMStats();
         }
 
-        function resetKMeans() { kmPoints = []; kmCentroids = []; drawKMeans(); }
+        function stopKMTimer() {
+            clearInterval(kmTimer);
+            kmTimer = null;
+        }
 
-        // --- NEURÁLIS HÁLÓ LOGIKA ---
-        const nnCanvas = document.getElementById('nnCanvas');
-        const nnCtx = nnCanvas ? nnCanvas.getContext('2d') : null;
-        let nnLayers = new Array(3, 4, 2);
+        function runToConvergence() {
+            stopKMTimer();
+            if (kmPoints.length < clusters) return;
+            kmTimer = setInterval(() => {
+                runKMeans();
+                if (kmConverged || kmIteration >= 100) stopKMTimer();
+            }, 400);
+        }
+
+        function restartKMeans() {
+            stopKMTimer();
+            kmCentroids = [];
+            kmIteration = 0;
+            kmConverged = false;
+            kmPoints.forEach(p => { p.cluster = -1; });
+            drawKMeans();
+            refreshKMStats();
+        }
+
+        function resetKMeans() {
+            kmPoints = [];
+            restartKMeans();
+        }
+
+        function changeK(delta) {
+            clusters = Math.min(5, Math.max(2, clusters + delta));
+            restartKMeans();
+        }
+
+        kmCanvas.addEventListener("click", e => {
+            const pos = canvasXY(kmCanvas, e);
+            kmPoints.push({ x: pos.x, y: pos.y, cluster: -1 });
+            kmConverged = false;
+            drawKMeans();
+            refreshKMStats();
+        });
+        document.getElementById("kmeans-step").addEventListener("click", runKMeans);
+        document.getElementById("kmeans-run").addEventListener("click", runToConvergence);
+        document.getElementById("kmeans-clear").addEventListener("click", resetKMeans);
+        document.getElementById("kmeans-k-less").addEventListener("click", () => changeK(-1));
+        document.getElementById("kmeans-k-more").addEventListener("click", () => changeK(1));
+
+
+        const nnCanvas = document.getElementById("nn-canvas");
+        const nnCtx = nnCanvas.getContext("2d");
+        const startLayers = [3, 4, 2];
+        let nnLayers = startLayers.slice();
+        let nnWeights = [];      
+        let nnBias = [];
+        let nnActivations = [];
         let pulseOffset = 0;
+        let nnFrame = 0;
+
+        const sigmoid = x => 1 / (1 + Math.exp(-x));
+        const randomWeight = () => (Math.random() * 2 - 1) * 2;
+
+        function makeWeights() {
+            nnWeights = [];
+            nnBias = [];
+            for (let l = 0; l < nnLayers.length - 1; l++) {
+                nnWeights.push(Array.from({ length: nnLayers[l + 1] }, () => Array.from({ length: nnLayers[l] }, randomWeight)));
+                nnBias.push(Array.from({ length: nnLayers[l + 1] }, () => randomWeight() / 2));
+            }
+        }
+
+        function forwardPass(inputs) {
+            const acts = [inputs];
+            for (let l = 0; l < nnWeights.length; l++) {
+                const prev = acts[l];
+                acts.push(nnWeights[l].map((row, j) => {
+                    const sum = row.reduce((total, w, i) => total + w * prev[i], nnBias[l][j]);
+                    return sigmoid(sum);
+                }));
+            }
+            return acts;
+        }
+
+        function currentInputs() {
+            return Array.from({ length: nnLayers[0] }, (_, i) => 0.5 + 0.5 * Math.sin(pulseOffset * 2 + i * 2.1));
+        }
+
+        function neuronPositions() {
+            const xStep = nnCanvas.width / (nnLayers.length + 1);
+            return nnLayers.map((count, l) => {
+                const yStep = nnCanvas.height / (count + 1);
+                return Array.from({ length: count }, (_, i) => ({ x: xStep * (l + 1), y: yStep * (i + 1) }));
+            });
+        }
+
+        function drawLink(a, b, w, activation) {
+            nnCtx.globalAlpha = 0.15 + 0.6 * Math.min(1, Math.abs(w) / 2);
+            nnCtx.strokeStyle = w >= 0 ? cssVar("--accent") : "#d64545";
+            nnCtx.lineWidth = 0.5 + Math.abs(w) * 0.8;
+            nnCtx.beginPath();
+            nnCtx.moveTo(a.x, a.y);
+            nnCtx.lineTo(b.x, b.y);
+            nnCtx.stroke();
+
+            const f = pulseOffset % 1;
+            nnCtx.globalAlpha = activation;
+            circle(nnCtx, a.x + (b.x - a.x) * f, a.y + (b.y - a.y) * f, 2.4, cssVar("--text"));
+            nnCtx.globalAlpha = 1;
+        }
+
+        function drawNeuron(n, activation) {
+            circle(nnCtx, n.x, n.y, 10, cssVar("--bg"));
+            nnCtx.globalAlpha = activation;
+            circle(nnCtx, n.x, n.y, 10, cssVar("--accent"));
+            nnCtx.globalAlpha = 1;
+            nnCtx.strokeStyle = cssVar("--text");
+            nnCtx.lineWidth = 2;
+            nnCtx.beginPath();
+            nnCtx.arc(n.x, n.y, 10, 0, Math.PI * 2);
+            nnCtx.stroke();
+        }
 
         function drawNN() {
-            if (!nnCtx || !nnCanvas) return;
             nnCtx.clearRect(0, 0, nnCanvas.width, nnCanvas.height);
-            
-            const lang = document.documentElement.lang || 'hu';
-            document.getElementById('nnStats').innerText = t[lang]["nn-stats"]
-                .replace('{i}', nnLayers[0])
-                .replace('{h}', nnLayers.length - 2)
-                .replace('{o}', nnLayers[nnLayers.length - 1]);
-            
-            let layerSpacing = nnCanvas.width / (nnLayers.length + 1);
-            let positions = new Array();
+            const layers = neuronPositions();
+            nnActivations = forwardPass(currentInputs());
 
-            nnLayers.forEach((count, lIdx) => {
-                let x = layerSpacing * (lIdx + 1);
-                let nodeSpacing = nnCanvas.height / (count + 1);
-                let layerPos = new Array();
-                for (let i = 0; i < count; i++) {
-                    layerPos.push({ x, y: nodeSpacing * (i + 1) });
-                }
-                positions.push(layerPos);
-            });
-
-            for (let l = 0; l < positions.length - 1; l++) {
-                positions[l].forEach(p1 => {
-                    positions[l+1].forEach(p2 => {
-                        nnCtx.strokeStyle = 'rgba(160, 160, 160, 0.15)';
-                        nnCtx.lineWidth = 1;
-                        nnCtx.beginPath(); nnCtx.moveTo(p1.x, p1.y); nnCtx.lineTo(p2.x, p2.y); nnCtx.stroke();
-
-                        nnCtx.fillStyle = '#4ade80';
-                        let tVal = (pulseOffset) % 1;
-                        let cx = p1.x + (p2.x - p1.x) * tVal;
-                        let cy = p1.y + (p2.y - p1.y) * tVal;
-                        nnCtx.beginPath(); nnCtx.arc(cx, cy, 2, 0, Math.PI * 2); nnCtx.fill();
-                    });
+            for (let l = 0; l < layers.length - 1; l++) {
+                layers[l].forEach((a, i) => {
+                    layers[l + 1].forEach((b, j) => drawLink(a, b, nnWeights[l][j][i], nnActivations[l][i]));
                 });
             }
+            layers.forEach((layer, l) => layer.forEach((n, i) => drawNeuron(n, nnActivations[l][i])));
+        }
 
-            positions.forEach(layer => {
-                layer.forEach(p => {
-                    nnCtx.beginPath(); nnCtx.arc(p.x, p.y, 10, 0, Math.PI * 2);
-                    nnCtx.fillStyle = '#121212'; nnCtx.fill();
-                    nnCtx.strokeStyle = '#ffffff'; nnCtx.lineWidth = 2; nnCtx.stroke();
-                });
+	const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+		function animateNN() {
+			if (!reduceMotion) pulseOffset += 0.015;
+			nnFrame++;
+			drawNN();
+			if (nnFrame % 8 === 0) refreshNNStats();
+			requestAnimationFrame(animateNN);
+		}
+
+        function refreshNNStats() {
+            const out = nnActivations.length ? nnActivations[nnActivations.length - 1] : [];
+            document.getElementById("nn-stats").textContent = statText("nn-stats", {
+                input: nnLayers[0],
+                hidden: nnLayers.length - 2,
+                output: nnLayers[nnLayers.length - 1],
+                values: out.length ? out.map(v => v.toFixed(2)).join(" / ") : "-"
             });
         }
 
-        function animateNN() { pulseOffset += 0.015; drawNN(); requestAnimationFrame(animateNN); }
-        function addHiddenLayer() { if(nnLayers.length < 5) { nnLayers.splice(nnLayers.length - 1, 0, 4); } drawNN(); }
-        function resetNN() { nnLayers = new Array(3, 4, 2); drawNN(); }
+        function addHiddenLayer() {
+            if (nnLayers.length >= 5) return;
+            nnLayers.splice(nnLayers.length - 1, 0, 4);
+            makeWeights();
+            drawNN();
+            refreshNNStats();
+        }
 
-        // --- GENETIKUS ALGORITMUS LOGIKA ---
-        const tspCanvas = document.getElementById('tspCanvas');
-        const tspCtx = tspCanvas ? tspCanvas.getContext('2d') : null;
-        let tspCities = new Array();
-        let tspPopulation = new Array();
-        let tspPopSize = 150;
-        let tspBestPath = new Array();
+        function resetNN() {
+            nnLayers = startLayers.slice();
+            makeWeights();
+            drawNN();
+            refreshNNStats();
+        }
+
+        function newWeights() {
+            makeWeights();
+            drawNN();
+            refreshNNStats();
+        }
+
+        makeWeights();
+        document.getElementById("nn-add-layer").addEventListener("click", addHiddenLayer);
+        document.getElementById("nn-reset").addEventListener("click", resetNN);
+        document.getElementById("nn-weights").addEventListener("click", newWeights);
+
+
+        const tspCanvas = document.getElementById("tsp-canvas");
+        const tspCtx = tspCanvas.getContext("2d");
+        const tspPopSize = 150;
+        const tspMaxGen = 1000;
+        const tspMutationRate = 0.2;
+        const tspElite = 2;
+        const tspTournament = 4;
+        const tspPatience = 250;
+
+        let tspCities = [];
+        let tspPopulation = [];
+        let tspBestPath = [];
         let tspBestDist = Infinity;
         let tspGeneration = 0;
+        let tspStale = 0;
         let tspRunning = false;
         let tspInterval = null;
         let tspSpeed = 40;
 
-        if (tspCanvas) {
-            tspCanvas.addEventListener('click', (e) => {
-                if (tspRunning) return;
-                const rect = tspCanvas.getBoundingClientRect();
-                const scaleX = tspCanvas.width / rect.width;
-                const scaleY = tspCanvas.height / rect.height;
-                const x = (e.clientX - rect.left) * scaleX;
-                const y = (e.clientY - rect.top) * scaleY;
-                tspCities.push({ x, y });
-                drawTSP();
+        function calcPathLength(path) {
+            let total = 0;
+            for (let i = 0; i < path.length; i++) {
+                total += dist(tspCities[path[i]], tspCities[path[(i + 1) % path.length]]);
+            }
+            return total;
+        }
+
+        function drawBestPath() {
+            tspCtx.strokeStyle = cssVar("--success");
+            tspCtx.lineWidth = 2;
+            tspCtx.beginPath();
+            tspCtx.moveTo(tspCities[tspBestPath[0]].x, tspCities[tspBestPath[0]].y);
+            for (const idx of tspBestPath) tspCtx.lineTo(tspCities[idx].x, tspCities[idx].y);
+            tspCtx.closePath();
+            tspCtx.stroke();
+        }
+
+        function drawTSP() {
+            tspCtx.clearRect(0, 0, tspCanvas.width, tspCanvas.height);
+
+            if (tspBestPath.length > 0) drawBestPath();
+            tspCities.forEach(c => circle(tspCtx, c.x, c.y, 6, cssVar("--text")));
+
+            document.getElementById("tsp-stats").textContent = statText("tsp-stats", {
+                cities: tspCities.length,
+                distance: tspBestDist === Infinity ? "-" : Math.round(tspBestDist) + " px",
+                generation: tspGeneration
             });
+        }
+
+        const randomIndex = n => Math.floor(Math.random() * n);
+
+        function shuffle(arr) {
+            const a = arr.slice();
+            for (let i = a.length - 1; i > 0; i--) {
+                const j = randomIndex(i + 1);
+                [a[i], a[j]] = [a[j], a[i]];
+            }
+            return a;
+        }
+
+        function pickParent(scored) {
+            let best = scored[randomIndex(scored.length)];
+            for (let k = 1; k < tspTournament; k++) {
+                const other = scored[randomIndex(scored.length)];
+                if (other.len < best.len) best = other;
+            }
+            return best.path;
+        }
+
+        function orderCrossover(a, b) {
+            const n = a.length;
+            let i = randomIndex(n);
+            let j = randomIndex(n);
+            if (i > j) [i, j] = [j, i];
+
+            const child = new Array(n).fill(-1);
+            const used = new Set();
+            for (let k = i; k <= j; k++) {
+                child[k] = a[k];
+                used.add(a[k]);
+            }
+
+            let pos = (j + 1) % n;
+            for (let k = 1; k <= n; k++) {
+                const gene = b[(j + k) % n];
+                if (!used.has(gene)) {
+                    child[pos] = gene;
+                    pos = (pos + 1) % n;
+                }
+            }
+            return child;
+        }
+
+        function mutate(path) {
+            const child = path.slice();
+            let i = randomIndex(child.length);
+            let j = randomIndex(child.length);
+            if (i > j) [i, j] = [j, i];
+
+            if (Math.random() < 0.5) {
+                const part = child.slice(i, j + 1).reverse();
+                child.splice(i, part.length, ...part);
+            } else {
+                [child[i], child[j]] = [child[j], child[i]];
+            }
+            return child;
+        }
+
+        function startTSP() {
+            if (tspCities.length < 4 || tspRunning) return;
+
+            tspRunning = true;
+            tspGeneration = 0;
+            tspStale = 0;
+            tspBestDist = Infinity;
+            tspBestPath = [];
+
+            const order = tspCities.map((c, i) => i);
+            tspPopulation = [];
+            for (let i = 0; i < tspPopSize; i++) tspPopulation.push(shuffle(order));
+
+            tspInterval = setInterval(evolveTSP, tspSpeed);
+        }
+
+        function evolveTSP() {
+            tspGeneration++;
+
+            const scored = tspPopulation.map(path => ({ path: path, len: calcPathLength(path) }));
+            scored.sort((x, y) => x.len - y.len);
+
+            if (scored[0].len < tspBestDist - 1e-9) {
+                tspBestDist = scored[0].len;
+                tspBestPath = scored[0].path.slice();
+                tspStale = 0;
+            } else {
+                tspStale++;
+            }
+
+            const next = scored.slice(0, tspElite).map(s => s.path.slice());
+            while (next.length < tspPopSize) {
+                let child = orderCrossover(pickParent(scored), pickParent(scored));
+                if (Math.random() < tspMutationRate) child = mutate(child);
+                next.push(child);
+            }
+            tspPopulation = next;
+
+            drawTSP();
+            if (tspGeneration >= tspMaxGen || tspStale >= tspPatience) stopTSP();
+        }
+
+        function stopTSP() {
+            clearInterval(tspInterval);
+            tspRunning = false;
+        }
+
+        function resetTSP() {
+            stopTSP();
+            tspCities = [];
+            tspPopulation = [];
+            tspBestPath = [];
+            tspBestDist = Infinity;
+            tspGeneration = 0;
+            tspStale = 0;
+            drawTSP();
         }
 
         function setTSPSpeed(ms) {
             tspSpeed = ms;
-            document.getElementById('ai3-slow').style.borderColor = 'var(--border)';
-            document.getElementById('ai3-mid').style.borderColor = 'var(--border)';
-            document.getElementById('ai3-fast').style.borderColor = 'var(--border)';
-            
-            if (ms === 150) document.getElementById('ai3-slow').style.borderColor = '#ffffff';
-            else if (ms === 40) document.getElementById('ai3-mid').style.borderColor = '#ffffff';
-            else if (ms === 5) document.getElementById('ai3-fast').style.borderColor = '#ffffff';
+            document.querySelectorAll(".speed-button").forEach(b => {
+                b.classList.toggle("active", Number(b.dataset.speed) === ms);
+            });
 
             if (tspRunning) {
                 clearInterval(tspInterval);
@@ -663,117 +1206,35 @@
             }
         }
 
-        function calcDistance(p1, p2) { return Math.hypot(p1.x - p2.x, p1.y - p2.y); }
-
-        function calcPathLength(path) {
-            let d = 0;
-            for (let i = 0; i < path.length; i++) {
-                d += calcDistance(tspCities[path[i]], tspCities[path[(i + 1) % path.length]]);
-            }
-            return d;
-        }
-
-        function drawTSP() {
-            if (!tspCtx) return;
-            tspCtx.clearRect(0, 0, tspCanvas.width, tspCanvas.height);
-            
-            const lang = document.documentElement.lang || 'hu';
-            const distText = tspBestDist === Infinity ? '-' : Math.round(tspBestDist) + ' px';
-            document.getElementById('tspStats').innerText = t[lang]["tsp-stats"]
-                .replace('{c}', tspCities.length)
-                .replace('{d}', distText)
-                .replace('{g}', tspGeneration);
-
-            tspCities.forEach(c => {
-                tspCtx.beginPath(); tspCtx.arc(c.x, c.y, 6, 0, Math.PI * 2);
-                tspCtx.fillStyle = '#ffffff'; tspCtx.fill();
-                tspCtx.strokeStyle = '#2a2a2a'; tspCtx.lineWidth = 1; tspCtx.stroke();
-            });
-
-            if (tspBestPath.length > 0) {
-                tspCtx.strokeStyle = '#4ade80';
-                tspCtx.lineWidth = 2;
-                tspCtx.beginPath();
-                tspCtx.moveTo(tspCities[tspBestPath[0]].x, tspCities[tspBestPath[0]].y);
-                for (let i = 1; i < tspBestPath.length; i++) {
-                    tspCtx.lineTo(tspCities[tspBestPath[i]].x, tspCities[tspBestPath[i]].y);
-                }
-                tspCtx.closePath();
-                tspCtx.stroke();
-            }
-        }
-
-        function shuffle(array) {
-            let arr = [...array];
-            for (let i = arr.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [arr[i], arr[j]] = [arr[j], arr[i]];
-            }
-            return arr;
-        }
-
-        function startTSP() {
-            if (tspCities.length < 4 || tspRunning) return;
-            tspRunning = true;
-            tspGeneration = 0;
-            tspBestDist = Infinity;
-            tspBestPath = new Array();
-
-            let baseOrder = Array.from({ length: tspCities.length }, (_, i) => i);
-            tspPopulation = new Array();
-            for (let i = 0; i < tspPopSize; i++) { tspPopulation.push(shuffle(baseOrder)); }
-            
-            tspInterval = setInterval(evolveTSP, tspSpeed);
-        }
-
-        function evolveTSP() {
-            tspGeneration++;
-            let currentBestDist = Infinity;
-            let currentBestPath = new Array();
-
-            tspPopulation.forEach(path => {
-                let d = calcPathLength(path);
-                if (d < tspBestDist) { tspBestDist = d; tspBestPath = path; }
-                if (d < currentBestDist) { currentBestDist = d; currentBestPath = path; }
-            });
-
-            let nextPop = new Array([...tspBestPath], [...currentBestPath]);
-            while (nextPop.length < tspPopSize) {
-                let child = [...tspBestPath];
-                if (Math.random() < 0.7) {
-                    let i = Math.floor(Math.random() * child.length);
-                    let j = Math.floor(Math.random() * child.length);
-                    [child[i], child[j]] = [child[j], child[i]];
-                }
-                nextPop.push(child);
-            }
-            tspPopulation = nextPop;
+        tspCanvas.addEventListener("click", e => {
+            if (tspRunning) return;
+            tspCities.push(canvasXY(tspCanvas, e));
             drawTSP();
-            if (tspGeneration >= 1000) { clearInterval(tspInterval); tspRunning = false; }
-        }
+        });
+        document.getElementById("tsp-start").addEventListener("click", startTSP);
+        document.getElementById("tsp-clear").addEventListener("click", resetTSP);
+        document.querySelectorAll(".speed-button").forEach(b => {
+            b.addEventListener("click", () => setTSPSpeed(Number(b.dataset.speed)));
+        });
 
-        function resetTSP() {
-            clearInterval(tspInterval);
-            tspRunning = false;
-            tspCities = []; tspPopulation = []; tspBestPath = []; tspBestDist = Infinity; tspGeneration = 0;
-            drawTSP();
-        }
+        document.querySelectorAll(".lang-switch button").forEach(b => {
+            b.addEventListener("click", () => setLanguage(b.dataset.lang));
+        });
+        document.getElementById("theme-toggle").addEventListener("click", toggleTheme);
 
-        // --- INICIALIZÁLÁS ---
-        window.onload = function() { 
-            setLanguage('hu'); 
-            drawKMeans();
-            animateNN();
-            drawTSP();
-            setTSPSpeed(40);
 
-            const savedTheme = localStorage.getItem("user-theme");
-            const systemPrefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
-            
-            if (savedTheme) setTheme(savedTheme);
-            else if (systemPrefersLight) setTheme("light");
-            else setTheme("dark");
-        };
+        let savedTheme = null;
+        let savedLang = null;
+        try {
+            savedTheme = localStorage.getItem("theme");
+            savedLang = localStorage.getItem("lang");
+        } catch (e) {}
+
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        setTheme(savedTheme || (prefersDark ? "dark" : "light"));
+        setLanguage(t[savedLang] ? savedLang : "hu");
+        setTSPSpeed(tspSpeed);
+        animateNN();
     </script>
 </body>
 </html>
