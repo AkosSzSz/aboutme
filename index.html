@@ -55,11 +55,12 @@
 
         section { padding-top: 64px; }
 
+        /* Optimalizált, szélesebb konténer, hogy laptopon se legyen túlságosan keskeny vagy szétcsúszva */
         .container {
             width: 100%;
-            max-width: 1150px;
+            max-width: 1100px;
             margin: 0 auto;
-            padding: 0 40px;
+            padding: 0 32px;
         }
 
         .site-header {
@@ -128,13 +129,13 @@
         .hero {
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 60px;
+            justify-content: space-between;
+            gap: 50px;
             padding-top: 72px;
         }
-        .hero-text { flex: 1 1 360px; }
+        .hero-text { flex: 1 1 500px; max-width: 650px; }
         .role { font-size: 1.2rem; color: var(--accent); margin: 8px 0 16px; }
-        .summary { max-width: 650px; color: var(--text-muted); }
+        .summary { color: var(--text-muted); }
         .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 24px 0 32px; }
 
         .small-heading { font-size: .95rem; color: var(--text-muted); border: 0; padding: 0; margin-bottom: 10px; }
@@ -150,12 +151,13 @@
         .skills .primary-skill { border-color: var(--accent); color: var(--accent); font-weight: 600; }
 
         .portrait {
-            width: 220px;
-            height: 220px;
+            width: 280px;
+            height: 280px;
             object-fit: cover;
             border-radius: var(--radius);
             border: 1px solid var(--border);
             background: var(--surface);
+            flex-shrink: 0;
         }
 
         .project { padding: 20px 0; border-bottom: 1px solid var(--border); }
@@ -240,7 +242,7 @@
 
         .lab-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
             gap: 24px;
             margin-top: 24px;
         }
@@ -260,7 +262,8 @@
         .lab-label { font-size: .85rem; color: var(--text-muted); }
         .lab-card p.lab-stats { font-size: .85rem; margin: 10px 0 0; }
 
-        form { max-width: 520px; }
+        /* Űrlap szélesítése, hogy ne legyen nagy üres hely mellette */
+        form { max-width: 100%; }
         label { display: block; margin-bottom: 4px; font-size: .92rem; color: var(--text-muted); }
         input, textarea {
             width: 100%;
@@ -284,9 +287,9 @@
         }
         .page-end .container { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; }
 
-        @media (max-width: 640px) {
+        @media (max-width: 768px) {
             .hero { flex-direction: column-reverse; align-items: flex-start; }
-            .portrait { width: 150px; height: 150px; }
+            .portrait { width: 160px; height: 160px; }
         }
 
         @media (max-width: 540px) {
@@ -356,7 +359,7 @@
                 </ul>
             </div>
 
-            <img class="portrait" src="profil.jpg" alt="Portrait of Ákos Szabó-Szikszay" width="220" height="220">
+            <img class="portrait" src="profil.jpg" alt="Portrait of Ákos Szabó-Szikszay" width="280" height="280">
         </section>
 
         <section class="container" id="projects">
@@ -510,7 +513,7 @@
                 "nav-contact": "Kapcsolat",
 
                 "role": "Adattudomány és mesterséges intelligencia",
-                "summary": "Pythonban foglalkozom adattudománnyal és mesterséges intelligenciával. Projektjeim között szerepel egy időjárás-előrejelzéseket mérési adatok alapján korrigáló rendszer, egy Pygame-alapú Snake játék, valamint a K-means klaszterezést, neurális hálózatokat és genetikus algoritmusokat bemutató interaktív programok.",
+                "summary": "Főként Pythonban tanultam és mélyedtem el az adattudomány és a mesterséges intelligencia területén. Prediktív modellek építésével és az adatokban rejlő minták feltárásával foglalkozom.",
                 "btn-email": "E-mail küldése",
                 "skills-h": "Programozási nyelvek",
 
@@ -574,7 +577,7 @@
                 "nav-contact": "Contact",
 
                 "role": "Data Science and Artificial Intelligence",
-               "summary": "I work with data science and artificial intelligence using Python. My projects include a system that corrects weather forecasts based on measured data, a Snake game built with Pygame, and interactive programs demonstrating K-means clustering, neural networks and genetic algorithms.",
+                "summary": "I have studied and worked mainly in Python, with a focus on data science and artificial intelligence. I build predictive models and look for the patterns hidden in data.",
                 "btn-email": "Send an email",
                 "skills-h": "Programming languages",
 
@@ -638,7 +641,7 @@
                 "nav-contact": "Kontakt",
 
                 "role": "Datenwissenschaft und künstliche Intelligenz",
-                "summary": "Ich beschäftige mich mit Data Science und künstlicher Intelligenz unter Verwendung von Python. Zu meinen Projekten gehören ein System zur Korrektur von Wettervorhersagen anhand gemessener Daten, ein mit Pygame entwickeltes Snake-Spiel sowie interaktive Programme zur Veranschaulichung von K-Means-Clustering, neuronalen Netzen und genetischen Algorithmen.",
+                "summary": "Ich habe mich hauptsächlich mit Python beschäftigt und mein Wissen in Datenwissenschaft und künstlicher Intelligenz vertieft. Ich entwickle Vorhersagemodelle und suche nach Mustern in Daten.",
                 "btn-email": "E-Mail senden",
                 "skills-h": "Programmiersprachen",
 
