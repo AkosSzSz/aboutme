@@ -33,7 +33,7 @@
 
         html {
             scroll-behavior: smooth;
-            scroll-padding-top: 72px;
+            scroll-padding-top: 64px;
         }
 
         body {
@@ -62,50 +62,107 @@
             padding: 0 32px;
         }
 
-        .site-header {
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            background: var(--bg);
-            border-bottom: 1px solid var(--border);
+        .menu-btn,
+        .top-right {
+            position: fixed;
+            top: calc(12px + env(safe-area-inset-top, 0px));
+            z-index: 30;
         }
-
-        .header-inner {
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 12px 24px;
-            padding-top: 12px;
-            padding-bottom: 12px;
-        }
-
-        .brand { font-weight: 600; color: var(--text); text-decoration: none; margin-right: auto; }
-        .main-nav { display: flex; flex-wrap: wrap; gap: 4px 20px; }
-        .main-nav a { color: var(--text-muted); text-decoration: none; font-size: .95rem; }
-        .main-nav a:hover { color: var(--accent); }
-        .header-tools { display: flex; align-items: center; gap: 10px; }
-
-        .lang-switch { display: flex; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
-        .lang-switch button {
-            font: inherit;
-            font-size: .8rem;
-            padding: 4px 10px;
-            border: 0;
-            background: none;
-            color: var(--text-muted);
-            cursor: pointer;
-        }
-        .lang-switch button[aria-pressed="true"] { background: var(--accent); color: var(--accent-text); }
+        .menu-btn { left: 12px; }
+        .top-right { right: 12px; display: flex; align-items: center; gap: 8px; }
 
         .icon-button {
-            width: 32px;
-            height: 32px;
+            width: 40px;
+            height: 40px;
+            font-size: 1.1rem;
             border: 1px solid var(--border);
             border-radius: var(--radius);
+            background: var(--bg);
+            color: var(--text);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, .12);
+            cursor: pointer;
+        }
+
+        .lang-dropdown { position: relative; }
+        .icon-button.lang-current {
+            width: auto;
+            padding: 0 12px;
+            font: inherit;
+            font-size: .85rem;
+            font-weight: 600;
+        }
+        .lang-menu {
+            position: absolute;
+            right: 0;
+            top: calc(100% + 6px);
+            min-width: 130px;
+            margin: 0;
+            padding: 4px;
+            list-style: none;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, .18);
+        }
+        .lang-menu[hidden] { display: none; }
+        .lang-menu button {
+            width: 100%;
+            text-align: left;
+            font: inherit;
+            padding: 8px 12px;
+            border: 0;
+            border-radius: 4px;
             background: none;
             color: var(--text);
             cursor: pointer;
         }
+        .lang-menu button:hover { background: var(--surface); }
+        .lang-menu button[aria-current="true"] { color: var(--accent); font-weight: 600; }
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 40;
+            background: rgba(0, 0, 0, .45);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .25s;
+        }
+        .overlay.show { opacity: 1; pointer-events: auto; }
+
+        .drawer {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 50;
+            width: min(300px, 82vw);
+            display: flex;
+            flex-direction: column;
+            padding: calc(16px + env(safe-area-inset-top, 0px)) 20px 20px;
+            background: var(--bg);
+            border-right: 1px solid var(--border);
+            transform: translateX(-100%);
+            visibility: hidden;
+            transition: transform .25s, visibility .25s;
+        }
+        .drawer.open { transform: none; visibility: visible; }
+        .drawer-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 24px;
+            font-weight: 600;
+        }
+        .drawer a.nav-link {
+            display: block;
+            padding: 12px 8px;
+            color: var(--text);
+            text-decoration: none;
+            border-bottom: 1px solid var(--border);
+        }
+        .drawer a.nav-link:hover { color: var(--accent); }
 
         .button {
             display: inline-block;
@@ -151,7 +208,7 @@
 
         .portrait {
             width: 240px;
-            height: 350px;
+            height: 372px;
             object-fit: cover;
             border-radius: var(--radius);
             border: 1px solid var(--border);
@@ -182,7 +239,7 @@
         :root[data-theme="dark"] .award-tag {
             background: rgba(110, 168, 254, 0.15);
         }
-		
+
         .tag { font-size: .8rem; color: var(--text-muted); border: 1px solid var(--border); border-radius: 4px; padding: 1px 8px; }
 
         .award-card {
@@ -306,33 +363,41 @@
 
         @media (prefers-reduced-motion: reduce) {
             html { scroll-behavior: auto; }
+            .overlay, .drawer { transition: none; }
         }
     </style>
 </head>
 <body>
 
-    <header class="site-header">
-        <div class="container header-inner">
-            <a class="brand" href="#top" data-i18n="name"></a>
+    <button type="button" id="menu-toggle" class="icon-button menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="drawer">☰</button>
 
-            <nav class="main-nav" aria-label="Main">
-                <a href="#about" data-i18n="nav-about"></a>
-                <a href="#projects" data-i18n="nav-projects"></a>
-                <a href="#ailab" data-i18n="nav-lab"></a>
-                <a href="#awards" data-i18n="nav-awards"></a>
-                <a href="#contact" data-i18n="nav-contact"></a>
-            </nav>
-
-            <div class="header-tools">
-                <div class="lang-switch" role="group" aria-label="Language">
-                    <button type="button" data-lang="hu">HU</button>
-                    <button type="button" data-lang="en">EN</button>
-                    <button type="button" data-lang="de">DE</button>
-                </div>
-                <button type="button" id="theme-toggle" class="icon-button" aria-label="Toggle light and dark theme">◐</button>
-            </div>
+    <div class="top-right">
+        <div class="lang-dropdown">
+            <button type="button" id="lang-toggle" class="icon-button lang-current" aria-label="Language" aria-haspopup="true" aria-expanded="false" aria-controls="lang-menu">
+                <span id="lang-label">HU</span> ▾
+            </button>
+            <ul id="lang-menu" class="lang-menu" hidden>
+                <li><button type="button" data-lang="hu">Magyar</button></li>
+                <li><button type="button" data-lang="en">English</button></li>
+                <li><button type="button" data-lang="de">Deutsch</button></li>
+            </ul>
         </div>
-    </header>
+        <button type="button" id="theme-toggle" class="icon-button" aria-label="Toggle light and dark theme">◐</button>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+
+    <nav class="drawer" id="drawer" aria-label="Main" inert>
+        <div class="drawer-head">
+            <span data-i18n="name"></span>
+            <button type="button" id="menu-close" class="icon-button" aria-label="Close">✕</button>
+        </div>
+        <a class="nav-link" href="#about" data-i18n="nav-about"></a>
+        <a class="nav-link" href="#projects" data-i18n="nav-projects"></a>
+        <a class="nav-link" href="#ailab" data-i18n="nav-lab"></a>
+        <a class="nav-link" href="#awards" data-i18n="nav-awards"></a>
+        <a class="nav-link" href="#contact" data-i18n="nav-contact"></a>
+    </nav>
 
     <main id="top">
 
@@ -357,7 +422,7 @@
                 </ul>
             </div>
 
-            <img class="portrait" src="profil.jpg" alt="Portrait of Ákos Szabó-Szikszay" width="240" height="350">
+            <img class="portrait" src="profil.jpg" alt="Portrait of Ákos Szabó-Szikszay" width="240" height="372">
         </section>
 
         <section class="container" id="projects">
@@ -461,7 +526,7 @@
                         </svg>
                         <span data-i18n="award-badge-text">Kiemelt elismerés</span>
                     </div>
-                    
+
                     <h3 data-i18n="award-title"></h3>
                     <p class="project-note" style="margin-top: 4px;" data-i18n="award-org"></p>
                     <p data-i18n="award-desc" style="margin-top: 12px;"></p>
@@ -710,9 +775,10 @@
             document.querySelectorAll("[data-i18n]").forEach(el => {
                 el.textContent = t[l][el.dataset.i18n];
             });
-            document.querySelectorAll(".lang-switch button").forEach(b => {
-                b.setAttribute("aria-pressed", b.dataset.lang === l);
+            document.querySelectorAll(".lang-menu button").forEach(b => {
+                b.setAttribute("aria-current", b.dataset.lang === l);
             });
+            document.getElementById("lang-label").textContent = l.toUpperCase();
 
             try { localStorage.setItem("lang", l); } catch (e) {}
 
@@ -755,7 +821,6 @@
             ctx.fillStyle = color;
             ctx.fill();
         }
-
 
         const kmCanvas = document.getElementById("kmeans-canvas");
         const kmCtx = kmCanvas.getContext("2d");
@@ -894,12 +959,11 @@
         document.getElementById("kmeans-k-less").addEventListener("click", () => changeK(-1));
         document.getElementById("kmeans-k-more").addEventListener("click", () => changeK(1));
 
-
         const nnCanvas = document.getElementById("nn-canvas");
         const nnCtx = nnCanvas.getContext("2d");
         const startLayers = [3, 4, 2];
         let nnLayers = startLayers.slice();
-        let nnWeights = [];      
+        let nnWeights = [];
         let nnBias = [];
         let nnActivations = [];
         let pulseOffset = 0;
@@ -981,15 +1045,15 @@
             layers.forEach((layer, l) => layer.forEach((n, i) => drawNeuron(n, nnActivations[l][i])));
         }
 
-	const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-		function animateNN() {
-			if (!reduceMotion) pulseOffset += 0.015;
-			nnFrame++;
-			drawNN();
-			if (nnFrame % 8 === 0) refreshNNStats();
-			requestAnimationFrame(animateNN);
-		}
+        function animateNN() {
+            if (!reduceMotion) pulseOffset += 0.015;
+            nnFrame++;
+            drawNN();
+            if (nnFrame % 8 === 0) refreshNNStats();
+            requestAnimationFrame(animateNN);
+        }
 
         function refreshNNStats() {
             const out = nnActivations.length ? nnActivations[nnActivations.length - 1] : [];
@@ -1026,7 +1090,6 @@
         document.getElementById("nn-add-layer").addEventListener("click", addHiddenLayer);
         document.getElementById("nn-reset").addEventListener("click", resetNN);
         document.getElementById("nn-weights").addEventListener("click", newWeights);
-
 
         const tspCanvas = document.getElementById("tsp-canvas");
         const tspCtx = tspCanvas.getContext("2d");
@@ -1218,11 +1281,63 @@
             b.addEventListener("click", () => setTSPSpeed(Number(b.dataset.speed)));
         });
 
-        document.querySelectorAll(".lang-switch button").forEach(b => {
-            b.addEventListener("click", () => setLanguage(b.dataset.lang));
-        });
-        document.getElementById("theme-toggle").addEventListener("click", toggleTheme);
+        const drawer = document.getElementById("drawer");
+        const overlay = document.getElementById("overlay");
+        const menuBtn = document.getElementById("menu-toggle");
+        const langBtn = document.getElementById("lang-toggle");
+        const langMenu = document.getElementById("lang-menu");
 
+        function openDrawer() {
+            closeLang();
+            drawer.classList.add("open");
+            drawer.removeAttribute("inert");
+            overlay.classList.add("show");
+            menuBtn.setAttribute("aria-expanded", "true");
+            document.body.style.overflow = "hidden";
+            drawer.querySelector(".nav-link").focus();
+        }
+
+        function closeDrawer(returnFocus) {
+            drawer.classList.remove("open");
+            drawer.setAttribute("inert", "");
+            overlay.classList.remove("show");
+            menuBtn.setAttribute("aria-expanded", "false");
+            document.body.style.overflow = "";
+            if (returnFocus) menuBtn.focus();
+        }
+
+        function closeLang() {
+            langMenu.hidden = true;
+            langBtn.setAttribute("aria-expanded", "false");
+        }
+
+        menuBtn.addEventListener("click", openDrawer);
+        document.getElementById("menu-close").addEventListener("click", () => closeDrawer(true));
+        overlay.addEventListener("click", () => closeDrawer(false));
+        drawer.querySelectorAll(".nav-link").forEach(a => a.addEventListener("click", () => closeDrawer(false)));
+
+        langBtn.addEventListener("click", () => {
+            const open = langMenu.hidden;
+            langMenu.hidden = !open;
+            langBtn.setAttribute("aria-expanded", String(open));
+        });
+        langMenu.querySelectorAll("button").forEach(b => {
+            b.addEventListener("click", () => {
+                setLanguage(b.dataset.lang);
+                closeLang();
+                langBtn.focus();
+            });
+        });
+        document.addEventListener("click", e => {
+            if (!e.target.closest(".lang-dropdown")) closeLang();
+        });
+        document.addEventListener("keydown", e => {
+            if (e.key !== "Escape") return;
+            if (drawer.classList.contains("open")) closeDrawer(true);
+            if (!langMenu.hidden) { closeLang(); langBtn.focus(); }
+        });
+
+        document.getElementById("theme-toggle").addEventListener("click", toggleTheme);
 
         let savedTheme = null;
         let savedLang = null;
