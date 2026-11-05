@@ -371,36 +371,49 @@
             overflow-x: auto;
         }
 
-        .media-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
-            gap: 16px;
-            align-items: start;
-            margin: 16px 0 8px;
+        .gif-viewer { margin: 16px 0 8px; }
+        .gif-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+        .gif-tabs button[aria-selected="true"] {
+            border-color: var(--accent);
+            color: var(--accent);
+            font-weight: 600;
         }
-        .media-grid figure { margin: 0; }
-        .media-grid .wide { grid-column: 1 / -1; }
-        .media-grid img {
-            display: block;
+        .gif-stage {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             width: 100%;
-            height: auto;
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
+            aspect-ratio: 16 / 10;
+            max-height: 520px;
             background: #0b0b0f;
-        }
-        .media-grid figcaption { margin-top: 6px; font-size: .85rem; color: var(--text-muted); }
-
-        .embed { margin: 16px 0 8px; }
-        .embed iframe {
-            display: block;
-            width: 100%;
-            height: 780px;
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            background: #fff;
+            overflow: hidden;
         }
-        .embed-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin-top: 10px; }
-        .embed-actions .project-note { margin: 0; }
+        .gif-stage img { display: block; width: 100%; height: 100%; object-fit: contain; }
+        .gif-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(255, 255, 255, .35);
+            border-radius: 50%;
+            background: rgba(18, 21, 26, .7);
+            color: #fff;
+            cursor: pointer;
+        }
+        .gif-nav:hover { border-color: var(--accent); color: var(--accent); }
+        .gif-nav.prev { left: 10px; }
+        .gif-nav.next { right: 10px; }
+        .gif-info { margin-top: 14px; }
+        .gif-info h4 { margin: 0 0 4px; font-size: 1rem; }
+        .gif-info p { margin: 0; color: var(--text-muted); }
 
         .award-tag {
             display: inline-flex;
@@ -515,6 +528,7 @@
         .page-end .container { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; }
 
         @media (max-width: 768px) {
+            .gif-stage { aspect-ratio: 4 / 3; }
             .container { padding: 0 20px; }
             .band { padding: 56px 0; }
             .band.hero-band { padding: 96px 0 56px; }
@@ -526,7 +540,6 @@
             .award-card { flex-direction: column-reverse; align-items: flex-start; }
             .award-image-wrapper { width: 100%; justify-content: center; }
             .award-image { max-width: 200px; }
-            .embed iframe { height: 620px; }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -715,33 +728,30 @@ Korrigált érték:        22,2 °C</pre>
                         <span class="tag">Python, matplotlib</span>
                     </header>
                     <p data-i18n="p3-desc">Pythonban készített animációk, amelyek a radioaktív bomlás alapjelenségeit szemléltetik: az alfa-, béta- és gamma-bomlást, a sugárzások viselkedését Wilson-kamrában és a felezési idő fogalmát.</p>
-                    <ul>
-                        <li data-i18n="p3-li1">Az atommag protonokból (piros) és neutronokból (kék) épül fel; az animációkon látható, ahogy kilép belőle az alfa-részecske (He-4 mag), a béta-részecske antineutrínóval együtt, illetve a gamma-foton</li>
-                        <li data-i18n="p3-li2">A Wilson-kamrás animáció a töltés és a tömeg hatását mutatja: az alfa- és a béta-sugárzás ellentétes irányba hajlik el, a nehezebb alfa-részecske kevésbé, a töltés nélküli gamma-sugárzás pedig egyenesen halad</li>
-                        <li data-i18n="p3-li3">A felezési idő animáció egy radioaktív minta atommagjait és az exponenciális bomlási görbét egyszerre mutatja, a megmaradt aktív atommagok arányával és a felezési idő sávjaival</li>
-                    </ul>
 
-                    <div class="media-grid">
-                        <figure>
-                            <img src="wilson-kamra.gif" alt="Sugárzások elhajlása Wilson-kamrában" data-i18n-alt="p3-cap1" width="600" height="600" loading="lazy">
-                            <figcaption data-i18n="p3-cap1">Sugárzások elhajlása Wilson-kamrában</figcaption>
-                        </figure>
-                        <figure>
-                            <img src="alfa-bomlas.gif" alt="Alfa-bomlás: az atommag alfa-részecskét bocsát ki" data-i18n-alt="p3-cap2" width="600" height="600" loading="lazy">
-                            <figcaption data-i18n="p3-cap2">Alfa-bomlás: az atommag alfa-részecskét bocsát ki</figcaption>
-                        </figure>
-                        <figure>
-                            <img src="beta-bomlas.gif" alt="Béta-bomlás: elektron és antineutrínó keletkezik" data-i18n-alt="p3-cap3" width="600" height="600" loading="lazy">
-                            <figcaption data-i18n="p3-cap3">Béta-bomlás: elektron és antineutrínó keletkezik</figcaption>
-                        </figure>
-                        <figure>
-                            <img src="gamma-sugarzas.gif" alt="Gamma-sugárzás: az atommag fotont bocsát ki" data-i18n-alt="p3-cap4" width="800" height="500" loading="lazy">
-                            <figcaption data-i18n="p3-cap4">Gamma-sugárzás: az atommag fotont bocsát ki</figcaption>
-                        </figure>
-                        <figure class="wide">
-                            <img src="felezesi-ido.gif" alt="Felezési idő és exponenciális bomlási görbe" data-i18n-alt="p3-cap5" width="1200" height="550" loading="lazy">
-                            <figcaption data-i18n="p3-cap5">Felezési idő és exponenciális bomlási görbe</figcaption>
-                        </figure>
+                    <div class="gif-viewer" id="gif-viewer">
+                        <div class="gif-tabs" role="tablist" data-i18n-aria="aria-gifs" aria-label="Animációk">
+                            <button type="button" class="button small" role="tab" id="gif-tab-0" aria-selected="true" aria-controls="gif-panel" data-i18n="g1-tab">Wilson-kamra</button>
+                            <button type="button" class="button small" role="tab" id="gif-tab-1" aria-selected="false" aria-controls="gif-panel" tabindex="-1" data-i18n="g2-tab">Alfa-bomlás</button>
+                            <button type="button" class="button small" role="tab" id="gif-tab-2" aria-selected="false" aria-controls="gif-panel" tabindex="-1" data-i18n="g3-tab">Béta-bomlás</button>
+                            <button type="button" class="button small" role="tab" id="gif-tab-3" aria-selected="false" aria-controls="gif-panel" tabindex="-1" data-i18n="g4-tab">Gamma-sugárzás</button>
+                            <button type="button" class="button small" role="tab" id="gif-tab-4" aria-selected="false" aria-controls="gif-panel" tabindex="-1" data-i18n="g5-tab">Felezési idő</button>
+                        </div>
+
+                        <div class="gif-stage" id="gif-panel" role="tabpanel" aria-labelledby="gif-tab-0">
+                            <button type="button" class="gif-nav prev" id="gif-prev" data-i18n-aria="aria-prev" aria-label="Előző animáció">
+                                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+                            </button>
+                            <img id="gif-img" src="wilson-kamra.gif" alt="Sugárzások elhajlása Wilson-kamrában" width="600" height="600">
+                            <button type="button" class="gif-nav next" id="gif-next" data-i18n-aria="aria-next" aria-label="Következő animáció">
+                                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+                            </button>
+                        </div>
+
+                        <div class="gif-info" aria-live="polite">
+                            <h4 id="gif-title">Sugárzások elhajlása Wilson-kamrában</h4>
+                            <p id="gif-desc">Az alfa-, béta- és gamma-sugárzás útja egy közös forrásból indulva. Az alfa-részecske nehéz és pozitív töltésű, ezért pályája kissé elhajlik; a béta-részecske könnyű és negatív, ezért ellenkező irányba, erősebben térül el; a töltés nélküli gamma-sugárzás egyenesen halad.</p>
+                        </div>
                     </div>
                 </article>
 
@@ -756,13 +766,12 @@ Korrigált érték:        22,2 °C</pre>
                         <li data-i18n="p4-li2">Megjelölt mérföldkövek többek között: H-1, He-4 (alfa-tüske), C-12, O-16, Si-28, Fe-56, Pb-208 (mágikus) és U-238 (hasadó); a stabilitási csúcsot a Fe-56 és a Ni-62 jelöli</li>
                         <li data-i18n="p4-li3">A fúziós és a hasadási trend vonala a stabilabb magok felé mutat, amikor könnyű magok egyesülnek, illetve nehéz magok hasadnak</li>
                     </ul>
-
-                    <div class="embed">
-                        <iframe id="valley-frame" src="energivolgy.html" title="Interaktív 3D ábra: nukleáris stabilitási völgy" data-i18n-title="p4-frame" loading="lazy"></iframe>
-                    </div>
-                    <div class="embed-actions">
-                        <a class="button small" id="valley-open" href="energivolgy.html" target="_blank" rel="noopener" data-i18n="p4-open">Megnyitás teljes méretben</a>
-                        <p class="project-note" data-i18n="p4-hint">Az ábra húzással forgatható, görgetéssel nagyítható.</p>
+                    <div class="project-links">
+                        <a class="button" id="valley-open" href="energivolgy.html" target="_blank" rel="noopener">
+                            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>
+                            <span data-i18n="p4-open">Interaktív ábra megnyitása</span>
+                        </a>
+                        <p class="project-note" data-i18n="p4-hint">Új lapon nyílik meg; az ábra húzással forgatható, görgetéssel nagyítható.</p>
                     </div>
                 </article>
             </div>
@@ -951,22 +960,31 @@ Korrigált érték:        22,2 °C</pre>
                 "p2-src": "Forráskód a GitHubon",
                 "p3-title": "Radioaktív bomlás és sugárzás – animációk",
                 "p3-desc": "Pythonban készített animációk, amelyek a radioaktív bomlás alapjelenségeit szemléltetik: az alfa-, béta- és gamma-bomlást, a sugárzások viselkedését Wilson-kamrában és a felezési idő fogalmát.",
-                "p3-li1": "Az atommag protonokból (piros) és neutronokból (kék) épül fel; az animációkon látható, ahogy kilép belőle az alfa-részecske (He-4 mag), a béta-részecske antineutrínóval együtt, illetve a gamma-foton",
-                "p3-li2": "A Wilson-kamrás animáció a töltés és a tömeg hatását mutatja: az alfa- és a béta-sugárzás ellentétes irányba hajlik el, a nehezebb alfa-részecske kevésbé, a töltés nélküli gamma-sugárzás pedig egyenesen halad",
-                "p3-li3": "A felezési idő animáció egy radioaktív minta atommagjait és az exponenciális bomlási görbét egyszerre mutatja, a megmaradt aktív atommagok arányával és a felezési idő sávjaival",
-                "p3-cap1": "Sugárzások elhajlása Wilson-kamrában",
-                "p3-cap2": "Alfa-bomlás: az atommag alfa-részecskét bocsát ki",
-                "p3-cap3": "Béta-bomlás: elektron és antineutrínó keletkezik",
-                "p3-cap4": "Gamma-sugárzás: az atommag fotont bocsát ki",
-                "p3-cap5": "Felezési idő és exponenciális bomlási görbe",
                 "p4-title": "3D nukleáris stabilitási völgy",
                 "p4-desc": "Plotly-val készített interaktív 3D ábra, amely az atommagok nukleononkénti kötési energiáját mutatja a protonszám (Z) és a neutronszám (N) függvényében; a stabil magok a völgy alján helyezkednek el.",
                 "p4-li1": "Két nézet között lehet váltani: az Oktatási nézet sima modellt, a Tudományos nézet héjmodellt mutat, külön nuklidpontokkal és mágikus számokkal (közel 2700 nuklid)",
                 "p4-li2": "Megjelölt mérföldkövek többek között: H-1, He-4 (alfa-tüske), C-12, O-16, Si-28, Fe-56, Pb-208 (mágikus) és U-238 (hasadó); a stabilitási csúcsot a Fe-56 és a Ni-62 jelöli",
                 "p4-li3": "A fúziós és a hasadási trend vonala a stabilabb magok felé mutat, amikor könnyű magok egyesülnek, illetve nehéz magok hasadnak",
-                "p4-frame": "Interaktív 3D ábra: nukleáris stabilitási völgy",
-                "p4-open": "Megnyitás teljes méretben",
-                "p4-hint": "Az ábra húzással forgatható, görgetéssel nagyítható.",
+                "p4-open": "Interaktív ábra megnyitása",
+                "p4-hint": "Új lapon nyílik meg; az ábra húzással forgatható, görgetéssel nagyítható.",
+                "aria-gifs": "Animációk",
+                "aria-prev": "Előző animáció",
+                "aria-next": "Következő animáció",
+                "g1-tab": "Wilson-kamra",
+                "g1-title": "Sugárzások elhajlása Wilson-kamrában",
+                "g1-desc": "Az alfa-, béta- és gamma-sugárzás útja egy közös forrásból indulva. Az alfa-részecske nehéz és pozitív töltésű, ezért pályája kissé elhajlik; a béta-részecske könnyű és negatív, ezért ellenkező irányba, erősebben térül el; a töltés nélküli gamma-sugárzás egyenesen halad.",
+                "g2-tab": "Alfa-bomlás",
+                "g2-title": "Alfa-bomlás",
+                "g2-desc": "Az atommag protonokból (piros) és neutronokból (kék) áll. Alfa-bomláskor két protonból és két neutronból álló csoport, vagyis egy He-4 mag (alfa-részecske) hagyja el az atommagot.",
+                "g3-tab": "Béta-bomlás",
+                "g3-title": "Béta-bomlás",
+                "g3-desc": "Béta-mínusz bomláskor az atommagból egy elektron (β⁻-részecske) és egy antineutrínó lép ki; eközben a mag egyik neutronja protonná alakul.",
+                "g4-tab": "Gamma-sugárzás",
+                "g4-title": "Gamma-sugárzás",
+                "g4-desc": "Gamma-sugárzáskor a gerjesztett atommag fotont bocsát ki. A foton töltés nélküli, ezért elektromos és mágneses térben nem hajlik el.",
+                "g5-tab": "Felezési idő",
+                "g5-title": "Felezési idő és exponenciális bomlási görbe",
+                "g5-desc": "Bal oldalon egy radioaktív minta atommagjai, jobb oldalon az exponenciális bomlási görbe látható. A már elbomlott magok elhalványulnak, a kijelző a megmaradt aktív atommagok arányát mutatja; a függőleges vonalak az egyszeres és a kétszeres felezési időt jelölik. Egy felezési idő alatt a magok fele elbomlik.",
 
                 "lab-h": "Kísérletező labor",
                 "lab-intro": "Három kis program, amelyekkel az algoritmusok működését szemléltetem. Közvetlenül a böngészőben kipróbálhatók.",
@@ -1076,22 +1094,31 @@ Korrigált érték:        22,2 °C</pre>
                 "p2-src": "Source code on GitHub",
                 "p3-title": "Radioactive decay and radiation – animations",
                 "p3-desc": "Animations made in Python that illustrate the basic phenomena of radioactive decay: alpha, beta and gamma decay, the behaviour of radiation in a Wilson cloud chamber, and the concept of half-life.",
-                "p3-li1": "The nucleus is built from protons (red) and neutrons (blue); the animations show an alpha particle (He-4 nucleus), a beta particle together with an antineutrino, or a gamma photon leaving it",
-                "p3-li2": "The cloud chamber animation shows the effect of charge and mass: alpha and beta radiation bend in opposite directions, the heavier alpha particle less, while uncharged gamma radiation travels straight",
-                "p3-li3": "The half-life animation shows the nuclei of a radioactive sample and the exponential decay curve side by side, with the share of remaining active nuclei and the half-life bands",
-                "p3-cap1": "Deflection of radiation in a Wilson cloud chamber",
-                "p3-cap2": "Alpha decay: the nucleus emits an alpha particle",
-                "p3-cap3": "Beta decay: an electron and an antineutrino are produced",
-                "p3-cap4": "Gamma radiation: the nucleus emits a photon",
-                "p3-cap5": "Half-life and the exponential decay curve",
                 "p4-title": "3D nuclear stability valley",
                 "p4-desc": "An interactive 3D figure made with Plotly that shows the binding energy per nucleon of atomic nuclei as a function of proton number (Z) and neutron number (N); stable nuclei lie along the floor of the valley.",
                 "p4-li1": "Two views can be switched: the educational view shows a smooth model, the scientific view the shell model with individual nuclide points and magic numbers (almost 2,700 nuclides)",
                 "p4-li2": "Marked milestones include H-1, He-4 (the alpha spike), C-12, O-16, Si-28, Fe-56, Pb-208 (magic) and U-238 (fissile); the stability peak is marked by Fe-56 and Ni-62",
                 "p4-li3": "The fusion and fission trend lines point towards more stable nuclei when light nuclei combine and when heavy nuclei split",
-                "p4-frame": "Interactive 3D figure: nuclear stability valley",
-                "p4-open": "Open full size",
-                "p4-hint": "Drag to rotate the figure, scroll to zoom.",
+                "p4-open": "Open the interactive figure",
+                "p4-hint": "Opens in a new tab; drag to rotate the figure, scroll to zoom.",
+                "aria-gifs": "Animations",
+                "aria-prev": "Previous animation",
+                "aria-next": "Next animation",
+                "g1-tab": "Wilson chamber",
+                "g1-title": "Deflection of radiation in a Wilson cloud chamber",
+                "g1-desc": "The paths of alpha, beta and gamma radiation starting from a common source. The alpha particle is heavy and positively charged, so its path bends slightly; the beta particle is light and negative, so it bends the opposite way, more strongly; uncharged gamma radiation travels straight.",
+                "g2-tab": "Alpha decay",
+                "g2-title": "Alpha decay",
+                "g2-desc": "The nucleus consists of protons (red) and neutrons (blue). In alpha decay, a group of two protons and two neutrons – a He-4 nucleus, the alpha particle – leaves the nucleus.",
+                "g3-tab": "Beta decay",
+                "g3-title": "Beta decay",
+                "g3-desc": "In beta-minus decay, an electron (β⁻ particle) and an antineutrino leave the nucleus; meanwhile one of its neutrons turns into a proton.",
+                "g4-tab": "Gamma radiation",
+                "g4-title": "Gamma radiation",
+                "g4-desc": "In gamma radiation, an excited nucleus emits a photon. The photon has no charge, so it is not deflected by electric or magnetic fields.",
+                "g5-tab": "Half-life",
+                "g5-title": "Half-life and the exponential decay curve",
+                "g5-desc": "On the left, the nuclei of a radioactive sample; on the right, the exponential decay curve. Nuclei that have decayed fade out, the counter shows the share of remaining active nuclei, and the vertical lines mark one and two half-lives. In one half-life, half of the nuclei decay.",
 
                 "lab-h": "Experiment lab",
                 "lab-intro": "Three small programs that illustrate how these algorithms work. They run directly in the browser.",
@@ -1201,22 +1228,31 @@ Korrigált érték:        22,2 °C</pre>
                 "p2-src": "Quellcode auf GitHub",
                 "p3-title": "Radioaktiver Zerfall und Strahlung – Animationen",
                 "p3-desc": "In Python erstellte Animationen, die die Grundphänomene des radioaktiven Zerfalls veranschaulichen: Alpha-, Beta- und Gamma-Zerfall, das Verhalten der Strahlung in einer Wilson-Nebelkammer und den Begriff der Halbwertszeit.",
-                "p3-li1": "Der Atomkern besteht aus Protonen (rot) und Neutronen (blau); die Animationen zeigen, wie ein Alphateilchen (He-4-Kern), ein Betateilchen samt Antineutrino oder ein Gamma-Photon den Kern verlässt",
-                "p3-li2": "Die Nebelkammer-Animation zeigt den Einfluss von Ladung und Masse: Alpha- und Betastrahlung werden in entgegengesetzte Richtungen abgelenkt, das schwerere Alphateilchen weniger, während die ungeladene Gammastrahlung geradeaus verläuft",
-                "p3-li3": "Die Halbwertszeit-Animation zeigt die Atomkerne einer radioaktiven Probe und die exponentielle Zerfallskurve nebeneinander, mit dem Anteil der verbleibenden aktiven Kerne und den Halbwertszeit-Bereichen",
-                "p3-cap1": "Ablenkung der Strahlung in der Wilson-Nebelkammer",
-                "p3-cap2": "Alpha-Zerfall: Der Kern sendet ein Alphateilchen aus",
-                "p3-cap3": "Beta-Zerfall: Ein Elektron und ein Antineutrino entstehen",
-                "p3-cap4": "Gammastrahlung: Der Kern sendet ein Photon aus",
-                "p3-cap5": "Halbwertszeit und exponentielle Zerfallskurve",
                 "p4-title": "3D-Stabilitätstal der Kerne",
                 "p4-desc": "Eine mit Plotly erstellte interaktive 3D-Grafik, die die Bindungsenergie pro Nukleon von Atomkernen in Abhängigkeit von Protonenzahl (Z) und Neutronenzahl (N) zeigt; die stabilen Kerne liegen am Talboden.",
                 "p4-li1": "Zwei Ansichten sind umschaltbar: Die Lehransicht zeigt ein glattes Modell, die wissenschaftliche Ansicht das Schalenmodell mit einzelnen Nuklidpunkten und magischen Zahlen (knapp 2700 Nuklide)",
                 "p4-li2": "Markierte Meilensteine sind u. a. H-1, He-4 (die Alpha-Spitze), C-12, O-16, Si-28, Fe-56, Pb-208 (magisch) und U-238 (spaltbar); das Stabilitätsmaximum markieren Fe-56 und Ni-62",
                 "p4-li3": "Die Trendlinien für Fusion und Spaltung zeigen die Richtung zu stabileren Kernen, wenn leichte Kerne verschmelzen bzw. schwere Kerne gespalten werden",
-                "p4-frame": "Interaktive 3D-Grafik: Stabilitätstal der Kerne",
-                "p4-open": "In voller Größe öffnen",
-                "p4-hint": "Zum Drehen ziehen, zum Zoomen scrollen.",
+                "p4-open": "Interaktive Grafik öffnen",
+                "p4-hint": "Öffnet sich in einem neuen Tab; zum Drehen ziehen, zum Zoomen scrollen.",
+                "aria-gifs": "Animationen",
+                "aria-prev": "Vorherige Animation",
+                "aria-next": "Nächste Animation",
+                "g1-tab": "Nebelkammer",
+                "g1-title": "Ablenkung der Strahlung in der Wilson-Nebelkammer",
+                "g1-desc": "Die Wege von Alpha-, Beta- und Gammastrahlung, die von einer gemeinsamen Quelle ausgehen. Das Alphateilchen ist schwer und positiv geladen, seine Bahn krümmt sich daher leicht; das Betateilchen ist leicht und negativ, es wird in die Gegenrichtung stärker abgelenkt; die ungeladene Gammastrahlung verläuft geradeaus.",
+                "g2-tab": "Alpha-Zerfall",
+                "g2-title": "Alpha-Zerfall",
+                "g2-desc": "Der Atomkern besteht aus Protonen (rot) und Neutronen (blau). Beim Alpha-Zerfall verlässt eine Gruppe aus zwei Protonen und zwei Neutronen – ein He-4-Kern, das Alphateilchen – den Kern.",
+                "g3-tab": "Beta-Zerfall",
+                "g3-title": "Beta-Zerfall",
+                "g3-desc": "Beim Beta-minus-Zerfall verlassen ein Elektron (β⁻-Teilchen) und ein Antineutrino den Kern; dabei wandelt sich eines seiner Neutronen in ein Proton um.",
+                "g4-tab": "Gammastrahlung",
+                "g4-title": "Gammastrahlung",
+                "g4-desc": "Bei der Gammastrahlung sendet ein angeregter Atomkern ein Photon aus. Das Photon ist ungeladen und wird deshalb in elektrischen und magnetischen Feldern nicht abgelenkt.",
+                "g5-tab": "Halbwertszeit",
+                "g5-title": "Halbwertszeit und exponentielle Zerfallskurve",
+                "g5-desc": "Links sind die Atomkerne einer radioaktiven Probe zu sehen, rechts die exponentielle Zerfallskurve. Zerfallene Kerne verblassen, die Anzeige nennt den Anteil der verbleibenden aktiven Kerne, und die senkrechten Linien markieren eine und zwei Halbwertszeiten. In einer Halbwertszeit zerfällt die Hälfte der Kerne.",
 
                 "lab-h": "Experimentierlabor",
                 "lab-intro": "Drei kleine Programme, die zeigen, wie diese Algorithmen funktionieren. Sie laufen direkt im Browser.",
@@ -1278,6 +1314,51 @@ Korrigált érték:        22,2 °C</pre>
         const CH = 250;
         const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+
+        const gifs = [
+            { file: "wilson-kamra.gif", w: 600, h: 600, key: "g1" },
+            { file: "alfa-bomlas.gif", w: 600, h: 600, key: "g2" },
+            { file: "beta-bomlas.gif", w: 600, h: 600, key: "g3" },
+            { file: "gamma-sugarzas.gif", w: 800, h: 500, key: "g4" },
+            { file: "felezesi-ido.gif", w: 1200, h: 550, key: "g5" }
+        ];
+        const gifTabs = Array.from(document.querySelectorAll("#gif-viewer [role='tab']"));
+        const gifImg = document.getElementById("gif-img");
+        let gifIndex = 0;
+
+        function renderGif() {
+            const g = gifs[gifIndex];
+            if (gifImg.getAttribute("src") !== g.file) gifImg.setAttribute("src", g.file);
+            gifImg.setAttribute("width", g.w);
+            gifImg.setAttribute("height", g.h);
+            gifImg.setAttribute("alt", t[lang][g.key + "-title"]);
+            document.getElementById("gif-title").textContent = t[lang][g.key + "-title"];
+            document.getElementById("gif-desc").textContent = t[lang][g.key + "-desc"];
+            gifTabs.forEach((tab, i) => {
+                tab.setAttribute("aria-selected", String(i === gifIndex));
+                tab.setAttribute("tabindex", i === gifIndex ? "0" : "-1");
+            });
+            document.getElementById("gif-panel").setAttribute("aria-labelledby", "gif-tab-" + gifIndex);
+        }
+
+        function selectGif(i, focusTab) {
+            gifIndex = (i + gifs.length) % gifs.length;
+            renderGif();
+            if (focusTab) gifTabs[gifIndex].focus();
+        }
+
+        gifTabs.forEach((tab, i) => {
+            tab.addEventListener("click", () => selectGif(i, false));
+            tab.addEventListener("keydown", e => {
+                if (e.key === "ArrowRight") { e.preventDefault(); selectGif(i + 1, true); }
+                else if (e.key === "ArrowLeft") { e.preventDefault(); selectGif(i - 1, true); }
+                else if (e.key === "Home") { e.preventDefault(); selectGif(0, true); }
+                else if (e.key === "End") { e.preventDefault(); selectGif(gifs.length - 1, true); }
+            });
+        });
+        document.getElementById("gif-prev").addEventListener("click", () => selectGif(gifIndex - 1, false));
+        document.getElementById("gif-next").addEventListener("click", () => selectGif(gifIndex + 1, false));
+
         let lang = "hu";
         let formStatusKey = null;
 
@@ -1304,17 +1385,12 @@ Korrigált érték:        22,2 °C</pre>
             document.querySelectorAll("[data-i18n-alt]").forEach(el => {
                 el.setAttribute("alt", t[l][el.dataset.i18nAlt]);
             });
-            document.querySelectorAll("[data-i18n-title]").forEach(el => {
-                el.setAttribute("title", t[l][el.dataset.i18nTitle]);
-            });
             document.querySelectorAll(".lang-menu button").forEach(b => {
                 b.setAttribute("aria-current", b.dataset.lang === l);
             });
             document.getElementById("lang-label").textContent = l.toUpperCase();
             document.getElementById("cv-link").setAttribute("href", cvFiles[l]);
 
-            const valleyFrame = document.getElementById("valley-frame");
-            if (valleyFrame.getAttribute("src") !== valleyFiles[l]) valleyFrame.setAttribute("src", valleyFiles[l]);
             document.getElementById("valley-open").setAttribute("href", valleyFiles[l]);
 
             if (formStatusKey) formStatus.textContent = t[l][formStatusKey];
@@ -1322,6 +1398,7 @@ Korrigált érték:        22,2 °C</pre>
                 try { localStorage.setItem("lang", l); } catch (e) {}
             }
 
+            renderGif();
             refreshKMStats();
             refreshNNStats();
             drawTSP();
